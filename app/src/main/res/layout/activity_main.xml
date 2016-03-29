@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="3"
+    android:background="#423752">
+
+    <TextView
+        android:id="@+id/btn_horizontal_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Horizontal NavigationTabBar"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#9b92b3"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_round_rect"/>
+
+    <TextView
+        android:id="@+id/btn_vertical_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Vetical NavigationTabBar"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#9b92b3"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_round_rect"/>
+
+    <TextView
+        android:id="@+id/btn_samples_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="NavigationTabBar Samples"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#9b92b3"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_round_rect"/>
+
+</LinearLayout>

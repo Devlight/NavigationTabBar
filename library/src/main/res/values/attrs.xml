@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NavigationTabBar">
+        <attr name="ntb_corners_radius" format="dimension"/>
+        <attr name="ntb_animation_duration" format="integer"/>
+
+        <attr name="ntb_inactive_color" format="color"/>
+        <attr name="ntb_active_color" format="color"/>
+
+        <attr name="ntb_preview_colors" format="reference"/>
+    </declare-styleable>
+
+</resources>

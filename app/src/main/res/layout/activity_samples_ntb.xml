@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#423752"
+    android:orientation="vertical"
+    android:weightSum="2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <com.gigamole.library.NavigationTabBar
+                android:id="@+id/ntb_sample_1"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#605271"
+                app:ntb_active_color="#000"
+                app:ntb_inactive_color="#fff"
+                app:ntb_animation_duration="1000"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <com.gigamole.library.NavigationTabBar
+                android:id="@+id/ntb_sample_2"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#d78cd3"
+                app:ntb_active_color="#d78cd3"
+                app:ntb_inactive_color="#d78cd3"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <com.gigamole.library.NavigationTabBar
+                android:id="@+id/ntb_sample_3"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:ntb_corners_radius="10dp"
+                app:ntb_inactive_color="#000"
+                app:ntb_preview_colors="@array/red_wine"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <com.gigamole.library.NavigationTabBar
+                android:id="@+id/ntb_sample_4"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                app:ntb_active_color="#be7818"
+                app:ntb_inactive_color="#be7818"
+                app:ntb_animation_duration="1000"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <com.gigamole.library.NavigationTabBar
+                android:id="@+id/ntb_sample_5"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_round_circle"
+                app:ntb_corners_radius="50dp"
+                app:ntb_active_color="#8d88e4"
+                app:ntb_inactive_color="#dddfec"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <com.gigamole.library.NavigationTabBar
+                android:id="@+id/ntb_sample_6"
+                android:layout_width="240dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_round_rect"
+                app:ntb_corners_radius="4dp"
+                app:ntb_preview_colors="@array/polluted_waves"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
