@@ -105,6 +105,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:background="@drawable/bg_round_circle"
+                app:ntb_animation_duration="400"
+                app:ntb_preview_colors="@array/red_wine"
                 app:ntb_corners_radius="50dp"
                 app:ntb_active_color="#8d88e4"
                 app:ntb_inactive_color="#dddfec"/>
