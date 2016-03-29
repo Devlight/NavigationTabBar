@@ -143,6 +143,12 @@ Tapbar interections|Circle interactions
 :-------------------------:|:-------------------------:
 ![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)
 
+TODO
+======
+
+ - model with title
+        
+ - model with badge
 
 Author
 =======
