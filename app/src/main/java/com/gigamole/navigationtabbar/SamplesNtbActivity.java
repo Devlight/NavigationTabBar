@@ -99,11 +99,12 @@ public class SamplesNtbActivity extends Activity {
         ntbSample5.setModelIndex(2, true);
         ntbSample5.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
             @Override
-            public void onStartTabSelected(final int index) {
+            public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
+
             }
 
             @Override
-            public void onEndTabSelected(final int index) {
+            public void onEndTabSelected(final NavigationTabBar.Model model, final int index) {
                 Toast.makeText(SamplesNtbActivity.this, String.format("onEndTabSelected #%d", index), Toast.LENGTH_SHORT).show();
             }
         });

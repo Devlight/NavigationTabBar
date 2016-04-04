@@ -11,30 +11,37 @@
         android:id="@+id/vp_horizontal_ntb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/wrapper_ntb_horizontal"/>
+        android:layout_below="@+id/wrapper_ntb_horizontal"/>
+
+    <View
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"/>
 
     <FrameLayout
         android:id="@+id/wrapper_ntb_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_height="wrap_content">
 
         <View
             android:id="@+id/bg_ntb_horizontal"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_gravity="bottom"
+            android:layout_gravity="top"
             android:background="#605271"/>
 
         <com.gigamole.library.NavigationTabBar
             android:id="@+id/ntb_horizontal"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:ntb_badge_gravity="top"
-            app:ntb_badge_position="right"
+            app:ntb_badge_gravity="bottom"
+            app:ntb_badge_position="left"
+            app:ntb_badge_use_typeface="true"
             app:ntb_badged="true"
-            app:ntb_title_mode="all"
-            app:ntb_titled="true"/>
+            app:ntb_title_mode="active"
+            app:ntb_titled="true"
+            app:ntb_typeface="fonts/agency.ttf"/>
 
     </FrameLayout>
 

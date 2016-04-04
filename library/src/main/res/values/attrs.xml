@@ -2,6 +2,25 @@
 <resources>
 
     <declare-styleable name="NavigationTabBar">
+        <attr name="ntb_titled" format="boolean"/>
+        <attr name="ntb_badged" format="boolean"/>
+        <attr name="ntb_badge_use_typeface" format="boolean"/>
+
+        <attr name="ntb_title_mode" format="enum">
+            <enum name="all" value="0"/>
+            <enum name="active" value="1"/>
+        </attr>
+        <attr name="ntb_badge_position" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
+        <attr name="ntb_badge_gravity" format="enum">
+            <enum name="top" value="0"/>
+            <enum name="bottom" value="1"/>
+        </attr>
+
+        <attr name="ntb_typeface" format="string"/>
         <attr name="ntb_corners_radius" format="dimension"/>
         <attr name="ntb_animation_duration" format="integer"/>
 

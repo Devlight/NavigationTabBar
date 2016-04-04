@@ -13,16 +13,17 @@ import android.widget.TextView;
 import com.gigamole.library.NavigationTabBar;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by GIGAMOLE on 28.03.2016.
  */
-public class HorizontalNtbActivity extends Activity {
+public class TopHorizontalNtbActivity extends Activity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_horizontal_ntb);
+        setContentView(R.layout.activity_horizontal_top_ntb);
         initUI();
     }
 
@@ -82,6 +83,15 @@ public class HorizontalNtbActivity extends Activity {
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 2);
 
+        navigationTabBar.post(new Runnable() {
+            @Override
+            public void run() {
+                final View bgNavigationTabBar = findViewById(R.id.bg_ntb_horizontal);
+                bgNavigationTabBar.getLayoutParams().height = (int) navigationTabBar.getBarHeight();
+                bgNavigationTabBar.requestLayout();
+            }
+        });
+
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
             @Override
             public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
@@ -94,45 +104,23 @@ public class HorizontalNtbActivity extends Activity {
             }
         });
 
-        navigationTabBar.post(new Runnable() {
+        findViewById(R.id.mask).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                final View bgNavigationTabBar = findViewById(R.id.bg_ntb_horizontal);
-                bgNavigationTabBar.getLayoutParams().height = (int) navigationTabBar.getBarHeight();
-                bgNavigationTabBar.requestLayout();
-            }
-        });
-
-        navigationTabBar.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+            public void onClick(final View v) {
                 for (int i = 0; i < navigationTabBar.getModels().size(); i++) {
                     final NavigationTabBar.Model model = navigationTabBar.getModels().get(i);
-                    switch (i) {
-                        case 0:
-                            model.setBadgeTitle("NTB");
-                            break;
-                        case 1:
-                            model.setBadgeTitle("with");
-                            break;
-                        case 2:
-                            model.setBadgeTitle("title");
-                            break;
-                        case 3:
-                            model.setBadgeTitle("badge");
-                            break;
-                        case 4:
-                            model.setBadgeTitle("777");
-                            break;
-                    }
                     navigationTabBar.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            model.showBadge();
+                            final String title = String.valueOf(new Random().nextInt(15));
+                            if (!model.isBadgeShowed()) {
+                                model.setBadgeTitle(title);
+                                model.showBadge();
+                            } else model.updateBadgeTitle(title);
                         }
                     }, i * 100);
                 }
             }
-        }, 500);
+        });
     }
 }
