@@ -212,7 +212,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Indexes
     private int mLastIndex = INVALID_INDEX;
-    private int mIndex;
+    private int mIndex = INVALID_INDEX;
     // General fraction value
     private float mFraction;
 
@@ -626,9 +626,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     }
 
     // Set model index from touch or programmatically
-    public void setModelIndex(int index, final boolean force) {
+    public void setModelIndex(int index, boolean force) {
         if (mAnimator.isRunning()) return;
         if (mModels.isEmpty()) return;
+
+        // This check gives us opportunity to have an non selected model
+        if (mIndex == INVALID_INDEX) force = true;
 
         // Detect if last is the same
         if (index == mIndex) return;

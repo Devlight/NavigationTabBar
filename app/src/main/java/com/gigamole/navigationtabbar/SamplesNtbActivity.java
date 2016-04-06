@@ -120,7 +120,6 @@ public class SamplesNtbActivity extends Activity {
         models6.add(new NavigationTabBar.Model(
                 getResources().getDrawable(R.drawable.ic_sixth), randomColor()));
         ntbSample6.setModels(models6);
-        ntbSample6.setModelIndex(2, true);
     }
 
     private int randomColor(){
