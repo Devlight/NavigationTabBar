@@ -548,13 +548,13 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mAnimatorListener = new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(final Animator animation) {
-                    if (mOnTabBarSelectedIndexListener != null && !mIsViewPagerMode)
+                    if (mOnTabBarSelectedIndexListener != null)
                         mOnTabBarSelectedIndexListener.onStartTabSelected(mModels.get(mIndex), mIndex);
                 }
 
                 @Override
                 public void onAnimationEnd(final Animator animation) {
-                    if (mOnTabBarSelectedIndexListener != null && !mIsViewPagerMode)
+                    if (mOnTabBarSelectedIndexListener != null)
                         mOnTabBarSelectedIndexListener.onEndTabSelected(mModels.get(mIndex), mIndex);
                 }
 
