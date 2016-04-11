@@ -1240,9 +1240,18 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         public Model(final Drawable icon, final int color) {
             mColor = color;
-            mIcon = icon != null ? ((BitmapDrawable) icon).getBitmap() :
-                    Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
-
+            if (icon != null) {
+                if(icon instanceof BitmapDrawable) {
+                    mIcon = ((BitmapDrawable) icon).getBitmap();
+                } else {
+                    mIcon = Bitmap.createBitmap(icon.getIntrinsicWidth(),icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(mIcon);
+                    icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    icon.draw(canvas);
+                }
+            } else {
+                mIcon = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
+            }
             mBadgeAnimator.addListener(new Animator.AnimatorListener() {
 
                 @Override
