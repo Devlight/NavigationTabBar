@@ -969,12 +969,13 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         // Draw pointer with active color to wrap out active icon
         if (mCornersRadius == 0) mIconsCanvas.drawRect(mPointerBounds, mIconPointerPaint);
-        else mIconsCanvas.drawRoundRect(mPointerBounds, mCornersRadius, mCornersRadius, mIconPointerPaint);
+        else
+            mIconsCanvas.drawRoundRect(mPointerBounds, mCornersRadius, mCornersRadius, mIconPointerPaint);
 
         // Draw general bitmap
         canvas.drawBitmap(mBitmap, 0.0f, 0.0f, null);
         // Draw icons bitmap on top
-        canvas.drawBitmap( mIconsBitmap, 0.0f, pointerBadgeMargin, null);
+        canvas.drawBitmap(mIconsBitmap, 0.0f, pointerBadgeMargin, null);
 
         // If is not badged, exit
         if (!mIsBadged) return;
@@ -1068,7 +1069,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         model.mIconMatrix.postScale(
                 model.mInactiveIconScale + matrixScale, model.mInactiveIconScale + matrixScale,
                 matrixCenterX, matrixCenterY + (mIsTitled && mTitleMode == TitleMode.ACTIVE ?
-                                mTitleMargin * 0.5f * interpolation : 0.0f)
+                        mTitleMargin * 0.5f * interpolation : 0.0f)
         );
 
         mModelTitlePaint.setTextSize(mModelTitleSize * textScale);
@@ -1097,7 +1098,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                 model.mInactiveIconScale + model.mActiveIconScaleBy - matrixLastScale,
                 model.mInactiveIconScale + model.mActiveIconScaleBy - matrixLastScale,
                 matrixCenterX, matrixCenterY + (mIsTitled && mTitleMode == TitleMode.ACTIVE ?
-                                mTitleMargin * 0.5f - (mTitleMargin * 0.5f * lastInterpolation) : 0.0f)
+                        mTitleMargin * 0.5f - (mTitleMargin * 0.5f * lastInterpolation) : 0.0f)
         );
 
         mModelTitlePaint.setTextSize(mModelTitleSize * textLastScale);
@@ -1241,17 +1242,21 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         public Model(final Drawable icon, final int color) {
             mColor = color;
             if (icon != null) {
-                if(icon instanceof BitmapDrawable) {
-                    mIcon = ((BitmapDrawable) icon).getBitmap();
-                } else {
-                    mIcon = Bitmap.createBitmap(icon.getIntrinsicWidth(),icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(mIcon);
+                if (icon instanceof BitmapDrawable) mIcon = ((BitmapDrawable) icon).getBitmap();
+                else {
+                    mIcon = Bitmap.createBitmap(
+                            icon.getIntrinsicWidth(),
+                            icon.getIntrinsicHeight(),
+                            Bitmap.Config.ARGB_8888
+                    );
+                    final Canvas canvas = new Canvas(mIcon);
                     icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                     icon.draw(canvas);
                 }
             } else {
                 mIcon = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
             }
+
             mBadgeAnimator.addListener(new Animator.AnimatorListener() {
 
                 @Override
