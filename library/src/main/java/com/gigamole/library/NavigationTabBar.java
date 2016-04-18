@@ -19,6 +19,7 @@ package com.gigamole.library;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -1186,7 +1187,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         return savedState;
     }
 
-    static class SavedState extends BaseSavedState {
+    private static class SavedState extends BaseSavedState {
         int index;
 
         public SavedState(Parcelable superState) {
@@ -1216,6 +1217,23 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                 return new SavedState[size];
             }
         };
+    }
+
+    @Override
+    protected void onConfigurationChanged(final Configuration newConfig) {
+        // Config view on rotate etc.
+        super.onConfigurationChanged(newConfig);
+        requestLayout();
+
+        // Refresh pointer and state after config changed to current
+        final int tempIndex = mIndex;
+        setModelIndex(INVALID_INDEX, true);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                setModelIndex(tempIndex, true);
+            }
+        });
     }
 
     // Model class

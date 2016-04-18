@@ -81,16 +81,20 @@ public class HorizontalNtbActivity extends Activity {
                 getResources().getDrawable(R.drawable.ic_fifth), Color.parseColor(colors[4]), "Medal"));
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 2);
-
-        navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
+        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
+            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
 
             }
 
             @Override
-            public void onEndTabSelected(final NavigationTabBar.Model model, final int index) {
-                model.hideBadge();
+            public void onPageSelected(final int position) {
+                navigationTabBar.getModels().get(position).hideBadge();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(final int state) {
+
             }
         });
 

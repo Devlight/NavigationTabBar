@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".HorizontalNtbActivity"/>
+        <activity android:name=".HorizontalNtbActivity"
+                  android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name=".TopHorizontalNtbActivity"/>
         <activity android:name=".VerticalNtbActivity"/>
         <activity android:name=".SamplesNtbActivity"/>
