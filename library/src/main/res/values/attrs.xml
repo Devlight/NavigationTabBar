@@ -4,6 +4,7 @@
     <declare-styleable name="NavigationTabBar">
         <attr name="ntb_titled" format="boolean"/>
         <attr name="ntb_badged" format="boolean"/>
+        <attr name="ntb_scaled" format="boolean"/>
         <attr name="ntb_badge_use_typeface" format="boolean"/>
 
         <attr name="ntb_title_mode" format="enum">

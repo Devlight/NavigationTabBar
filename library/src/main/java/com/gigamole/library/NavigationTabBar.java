@@ -70,16 +70,17 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static int DEFAULT_ACTIVE_COLOR = Color.WHITE;
 
     private final static float MIN_FRACTION = 0.0f;
+    private final static float NON_SCALED_FRACTION = 0.35f;
     private final static float MAX_FRACTION = 1.0f;
 
     private final static int MIN_ALPHA = 0;
     private final static int MAX_ALPHA = 255;
 
-    private final static float ACTIVE_ICON_SCALE_BY = 0.35f;
-    private final static float ICON_SIZE_FRACTION = 0.4f;
+    private final static float ACTIVE_ICON_SCALE_BY = 0.3f;
+    private final static float ICON_SIZE_FRACTION = 0.45f;
 
-    private final static float TITLE_ACTIVE_ICON_SCALE_BY = 0.25f;
-    private final static float TITLE_ICON_SIZE_FRACTION = 0.4f;
+    private final static float TITLE_ACTIVE_ICON_SCALE_BY = 0.2f;
+    private final static float TITLE_ICON_SIZE_FRACTION = 0.45f;
     private final static float TITLE_ACTIVE_SCALE_BY = 0.2f;
     private final static float TITLE_SIZE_FRACTION = 0.2f;
     private final static float TITLE_MARGIN_FRACTION = 0.15f;
@@ -227,6 +228,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private boolean mIsTitled;
     // Detect if model has badge
     private boolean mIsBadged;
+    // Detect if model icon scaled
+    private boolean mIsScaled;
     // Detect if model badge have custom typeface
     private boolean mIsBadgeUseTypeface;
     // Detect if is bar mode or indicator pager mode
@@ -273,6 +276,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             );
             setIsBadged(
                     typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badged, false)
+            );
+            setIsScaled(
+                    typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_scaled, true)
             );
             setIsBadgeUseTypeface(
                     typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badge_use_typeface, false)
@@ -392,6 +398,15 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     public void setIsBadged(final boolean isBadged) {
         mIsBadged = isBadged;
+        requestLayout();
+    }
+
+    public boolean isScaled() {
+        return mIsScaled;
+    }
+
+    public void setIsScaled(final boolean isScaled) {
+        mIsScaled = isScaled;
         requestLayout();
     }
 
@@ -912,18 +927,26 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             // Get interpolated fraction for left last and current models
             final float interpolation = mResizeInterpolator.getResizeInterpolation(mFraction, true);
             final float lastInterpolation = mResizeInterpolator.getResizeInterpolation(mFraction, false);
+//            final float interpolation =
+//                    mIsScaled ? mResizeInterpolator.getResizeInterpolation(mFraction, true);
+//            final float lastInterpolation =
+//                    mIsScaled ? mResizeInterpolator.getResizeInterpolation(mFraction, false) :
+//                            (MAX_FRACTION - NON_SCALED_FRACTION);
 
             // Scale value relative to interpolation
-            final float matrixScale = model.mActiveIconScaleBy * interpolation;
-            final float matrixLastScale = model.mActiveIconScaleBy * lastInterpolation;
+            final float matrixScale = model.mActiveIconScaleBy *
+                    (mIsScaled ? interpolation : NON_SCALED_FRACTION);
+            final float matrixLastScale = model.mActiveIconScaleBy *
+                    (mIsScaled ? lastInterpolation : (MAX_FRACTION - NON_SCALED_FRACTION));
 
             // Get title alpha relative to interpolation
             final int titleAlpha = (int) (MAX_ALPHA * interpolation);
             final int titleLastAlpha = MAX_ALPHA - (int) (MAX_ALPHA * lastInterpolation);
             // Get title scale relative to interpolation
-            final float titleScale = MAX_FRACTION + (interpolation * TITLE_ACTIVE_SCALE_BY);
-            final float titleLastScale = (MAX_FRACTION + TITLE_ACTIVE_SCALE_BY) -
-                    (lastInterpolation * TITLE_ACTIVE_SCALE_BY);
+            final float titleScale = MAX_FRACTION +
+                    ((mIsScaled ? interpolation : NON_SCALED_FRACTION) * TITLE_ACTIVE_SCALE_BY);
+            final float titleLastScale = mIsScaled ? (MAX_FRACTION + TITLE_ACTIVE_SCALE_BY) -
+                    (lastInterpolation * TITLE_ACTIVE_SCALE_BY) : titleScale;
 
             // Check if we handle models from touch on NTP or from ViewPager
             // There is a strange logic of ViewPager onPageScrolled method, so it is
@@ -940,12 +963,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     );
                 else
                     updateInactiveModel(
-                            model, leftOffset, topOffset, matrixCenterX, matrixCenterY
+                            model, leftOffset, topOffset, titleScale,
+                            matrixScale, matrixCenterX, matrixCenterY
                     );
             } else {
                 if (i != mIndex && i != mIndex + 1)
                     updateInactiveModel(
-                            model, leftOffset, topOffset, matrixCenterX, matrixCenterY
+                            model, leftOffset, topOffset, titleScale,
+                            matrixScale, matrixCenterX, matrixCenterY
                     );
                 else if (i == mIndex + 1)
                     updateCurrentModel(
@@ -1111,17 +1136,25 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             final Model model,
             final float leftOffset,
             final float topOffset,
+            final float textScale,
+            final float matrixScale,
             final float matrixCenterX,
             final float matrixCenterY
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(leftOffset, topOffset);
 
-        model.mIconMatrix.postScale(
-                model.mInactiveIconScale, model.mInactiveIconScale, matrixCenterX, matrixCenterY
-        );
+        if (mIsScaled)
+            model.mIconMatrix.postScale(
+                    model.mInactiveIconScale, model.mInactiveIconScale, matrixCenterX, matrixCenterY
+            );
+        else
+            model.mIconMatrix.postScale(
+                    model.mInactiveIconScale + matrixScale, model.mInactiveIconScale + matrixScale,
+                    matrixCenterX, matrixCenterY
+            );
 
-        mModelTitlePaint.setTextSize(mModelTitleSize);
+        mModelTitlePaint.setTextSize(mModelTitleSize * (mIsScaled ? 1.0f : textScale));
         if (mTitleMode == TitleMode.ACTIVE) mModelTitlePaint.setAlpha(MIN_ALPHA);
     }
 

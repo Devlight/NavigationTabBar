@@ -33,7 +33,7 @@ dependencies {
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:library:1.1.4'
+compile 'com.github.devlight.navigationtabbar:library:1.1.5'
 ```
 
 Or Maven:
@@ -42,7 +42,7 @@ Or Maven:
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
     <type>aar</type>
 </dependency>
 ```
@@ -80,6 +80,10 @@ For NTB you can set such parameters as:
  - title mode:
    
      allows you to handle mode of the model title show. Can show all or only active.
+     
+ - scale mode:
+    
+     allows you to handle mode of the model icon and title scale.
      
  - badge position:
  
@@ -187,6 +191,7 @@ And XML init:
    app:ntb_inactive_color="#000"
    app:ntb_badged="true"
    app:ntb_titled="true"
+   app:ntb_scaled="true"
    app:ntb_title_mode="all"
    app:ntb_badge_position="right"
    app:ntb_badge_gravity="top"

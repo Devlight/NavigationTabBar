@@ -33,6 +33,7 @@
             app:ntb_badge_gravity="top"
             app:ntb_badge_position="right"
             app:ntb_badged="true"
+            app:ntb_scaled="true"
             app:ntb_title_mode="all"
             app:ntb_titled="true"/>
 
