@@ -51,6 +51,7 @@ import android.widget.Scroller;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -110,8 +111,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private RectF mBounds = new RectF();
     private RectF mPointerBounds = new RectF();
     // Badge bounds and bg badge bounds
-    final Rect mBadgeBounds = new Rect();
-    final RectF mBgBadgeBounds = new RectF();
+    private final Rect mBadgeBounds = new Rect();
+    private final RectF mBgBadgeBounds = new RectF();
 
     // Canvas, where all of other canvas will be merged
     private Bitmap mBitmap;
@@ -149,7 +150,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Paint for icon mask pointer
-    final Paint mIconPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mIconPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         {
             setStyle(Style.FILL);
             setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
@@ -157,7 +158,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Paint for model title
-    final Paint mModelTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mModelTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
             setColor(Color.WHITE);
@@ -166,7 +167,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Paint for badge
-    final Paint mBadgePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mBadgePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
             setTextAlign(Align.CENTER);
@@ -180,7 +181,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private int mAnimationDuration;
 
     // NTP models
-    private ArrayList<Model> mModels = new ArrayList<>();
+    private List<Model> mModels = new ArrayList<>();
 
     // Variables for ViewPager
     private ViewPager mViewPager;
@@ -361,11 +362,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         resetScroller();
     }
 
-    public ArrayList<Model> getModels() {
+    public List<Model> getModels() {
         return mModels;
     }
 
-    public void setModels(final ArrayList<Model> models) {
+    public void setModels(final List<Model> models) {
         //Set update listeners to badge model animation
         for (final Model model : models) {
             model.mBadgeAnimator.removeAllUpdateListeners();
