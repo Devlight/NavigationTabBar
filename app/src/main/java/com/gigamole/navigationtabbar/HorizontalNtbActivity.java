@@ -128,6 +128,8 @@ public class HorizontalNtbActivity extends Activity {
                         case 4:
                             model.setBadgeTitle("777");
                             break;
+                        default:
+                            break;
                     }
                     navigationTabBar.postDelayed(new Runnable() {
                         @Override
