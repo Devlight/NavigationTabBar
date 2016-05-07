@@ -19,6 +19,7 @@ package com.gigamole.library;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -49,8 +50,10 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -87,7 +90,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     private final static float BADGE_HORIZONTAL_FRACTION = 0.5f;
     private final static float BADGE_VERTICAL_FRACTION = 0.75f;
-    private final static float BADGE_TITLE_SIZE_FRACTION = 0.85f;
+    private final static float BADGE_TITLE_SIZE_FRACTION = 0.9f;
 
     private final static int ALL_INDEX = 0;
     private final static int ACTIVE_INDEX = 1;
@@ -212,6 +215,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     // Model badge gravity: top or bottom
     private BadgeGravity mBadgeGravity;
 
+    // Model badge bg and title color.
+    // By default badge bg color is the active model color and badge title color is the model bg color
+    // To reset colors just set bg and title color to 0
+    private int mBadgeTitleColor;
+    private int mBadgeBgColor;
+
     // Indexes
     private int mLastIndex = INVALID_INDEX;
     private int mIndex = INVALID_INDEX;
@@ -271,30 +280,24 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NavigationTabBar);
         try {
-            setIsTitled(
-                    typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_titled, false)
-            );
-            setIsBadged(
-                    typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badged, false)
-            );
-            setIsScaled(
-                    typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_scaled, true)
-            );
+            setIsTitled(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_titled, false));
+            setIsBadged(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badged, false));
+            setIsScaled(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_scaled, true));
             setIsBadgeUseTypeface(
                     typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badge_use_typeface, false)
             );
-            setTitleMode(
-                    typedArray.getInt(R.styleable.NavigationTabBar_ntb_title_mode, ALL_INDEX)
-            );
+
+            setTitleMode(typedArray.getInt(R.styleable.NavigationTabBar_ntb_title_mode, ALL_INDEX));
             setBadgePosition(
                     typedArray.getInt(R.styleable.NavigationTabBar_ntb_badge_position, RIGHT_INDEX)
             );
             setBadgeGravity(
                     typedArray.getInt(R.styleable.NavigationTabBar_ntb_badge_gravity, TOP_INDEX)
             );
-            setTypeface(
-                    typedArray.getString(R.styleable.NavigationTabBar_ntb_typeface)
-            );
+            setBadgeBgColor(typedArray.getColor(R.styleable.NavigationTabBar_ntb_badge_bg_color, 0));
+            setBadgeTitleColor(typedArray.getColor(R.styleable.NavigationTabBar_ntb_badge_title_color, 0));
+
+            setTypeface(typedArray.getString(R.styleable.NavigationTabBar_ntb_typeface));
             setInactiveColor(
                     typedArray.getColor(
                             R.styleable.NavigationTabBar_ntb_inactive_color, DEFAULT_INACTIVE_COLOR
@@ -483,11 +486,29 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         requestLayout();
     }
 
+    public int getBadgeBgColor() {
+        return mBadgeBgColor;
+    }
+
+    public void setBadgeBgColor(final int badgeBgColor) {
+        mBadgeBgColor = badgeBgColor;
+    }
+
+    public int getBadgeTitleColor() {
+        return mBadgeTitleColor;
+    }
+
+    public void setBadgeTitleColor(final int badgeTitleColor) {
+        mBadgeTitleColor = badgeTitleColor;
+    }
+
     public Typeface getTypeface() {
         return mTypeface;
     }
 
     public void setTypeface(final String typeface) {
+        if (TextUtils.isEmpty(typeface)) return;
+
         Typeface tempTypeface;
         try {
             tempTypeface = Typeface.createFromAsset(getContext().getAssets(), typeface);
@@ -566,10 +587,18 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                 public void onAnimationStart(final Animator animation) {
                     if (mOnTabBarSelectedIndexListener != null)
                         mOnTabBarSelectedIndexListener.onStartTabSelected(mModels.get(mIndex), mIndex);
+
+                    animation.removeListener(this);
+                    animation.addListener(this);
                 }
 
                 @Override
                 public void onAnimationEnd(final Animator animation) {
+                    if (mIsViewPagerMode) return;
+
+                    animation.removeListener(this);
+                    animation.addListener(this);
+
                     if (mOnTabBarSelectedIndexListener != null)
                         mOnTabBarSelectedIndexListener.onEndTabSelected(mModels.get(mIndex), mIndex);
                 }
@@ -927,11 +956,6 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             // Get interpolated fraction for left last and current models
             final float interpolation = mResizeInterpolator.getResizeInterpolation(mFraction, true);
             final float lastInterpolation = mResizeInterpolator.getResizeInterpolation(mFraction, false);
-//            final float interpolation =
-//                    mIsScaled ? mResizeInterpolator.getResizeInterpolation(mFraction, true);
-//            final float lastInterpolation =
-//                    mIsScaled ? mResizeInterpolator.getResizeInterpolation(mFraction, false) :
-//                            (MAX_FRACTION - NON_SCALED_FRACTION);
 
             // Scale value relative to interpolation
             final float matrixScale = model.mActiveIconScaleBy *
@@ -1050,7 +1074,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
             // Set color and alpha for badge bg
             if (model.mBadgeFraction == MIN_FRACTION) mBadgePaint.setColor(Color.TRANSPARENT);
-            else mBadgePaint.setColor(mActiveColor);
+            else mBadgePaint.setColor(mBadgeBgColor == 0 ? mActiveColor : mBadgeBgColor);
             mBadgePaint.setAlpha((int) (MAX_ALPHA * model.mBadgeFraction));
 
             // Set corners to round rect for badge bg and draw
@@ -1059,7 +1083,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
             // Set color and alpha for badge title
             if (model.mBadgeFraction == MIN_FRACTION) mBadgePaint.setColor(Color.TRANSPARENT);
-            else mBadgePaint.setColor(model.getColor());
+            else mBadgePaint.setColor(mBadgeTitleColor == 0 ? model.getColor() : mBadgeTitleColor);
             mBadgePaint.setAlpha((int) (MAX_ALPHA * model.mBadgeFraction));
 
             // Set badge title center position and draw title
@@ -1312,10 +1336,15 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
                 @Override
                 public void onAnimationStart(final Animator animation) {
+                    animation.removeListener(this);
+                    animation.addListener(this);
                 }
 
                 @Override
                 public void onAnimationEnd(final Animator animation) {
+                    animation.removeListener(this);
+                    animation.addListener(this);
+
                     // Detect whether we just update text and don`t reset show state
                     if (!mIsBadgeUpdated) mIsBadgeShowed = !mIsBadgeShowed;
                     else mIsBadgeUpdated = false;

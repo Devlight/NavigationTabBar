@@ -5,7 +5,7 @@ NavigationTabBar
 
 Navigation tab bar with colorful interactions.
 
-Horizontal NTB|NTB bottom, badge, all title |NTB top, badge, typeface, active title|Vertical NTB|NTB Samples|
+Horizontal NTB|NTB bottom, badge, all title |NTB top, colored badge, typeface, active title|Vertical NTB|NTB Samples|
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh4.googleusercontent.com/-hxXHKG4zMOU/VwLWxDdhxQI/AAAAAAAACQg/gErfodzZlpINFmlWllvuFs6dlRnp_rG9w/w322-h551-no/tbntb.gif)|![](https://lh5.googleusercontent.com/-3RKqh-MquqA/VwLWxHKv2jI/AAAAAAAACQg/WjmW9OravjIAzinLVFXEditNN4DFfRt6A/w322-h552-no/ttbntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
 
@@ -33,7 +33,7 @@ dependencies {
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:library:1.1.5'
+compile 'com.github.devlight.navigationtabbar:library:1.1.6'
 ```
 
 Or Maven:
@@ -42,7 +42,7 @@ Or Maven:
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <type>aar</type>
 </dependency>
 ```
@@ -59,23 +59,23 @@ For NTB you can set such parameters as:
  
  - models:
     
-    allows you to set NTB models, where you set icon color. Can be set up only via code.
+     allows you to set NTB models, where you set icon color. Can be set up only via code.
     
  - view pager:
      
-    allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.    
+     allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.    
 
  - model title:
     
-    allows you to enable title in you model.
+     allows you to enable title in you model.
     
  - model badge:
      
-    allows you to enable badge in you model.
+     allows you to enable badge in you model.
      
  - use custom typeface on badge:
      
-    allows you to handle set of custom typeface in your badge.
+     allows you to handle set of custom typeface in your badge.
     
  - title mode:
    
@@ -87,41 +87,47 @@ For NTB you can set such parameters as:
      
  - badge position:
  
-    allows you to set the badge position in you model. Can be: left(25%), center(50%) and right(75%).
+     allows you to set the badge position in you model. Can be: left(25%), center(50%) and right(75%).
 
  - badge gravity:
   
-    allows you to set the badge gravity in NTB. Can be top or bottom.
+     allows you to set the badge gravity in NTB. Can be top or bottom.
+     
+ - badge colors:
+   
+      allows you to set the badge bg and title colors.
     
  - typeface:
  
-    allows you to set custom typeface to your title.
+     allows you to set custom typeface to your title.
  
  - corners radius:
     
-    allows you to set corners radius of pointer.
+     allows you to set corners radius of pointer.
 
  - animation duration:
   
-    allows you to set animation duration.
+     allows you to set animation duration.
       
  - inactive color:
 
-    allows you to set inactive icon color.
+     allows you to set inactive icon color.
      
  - active color:
   
-    allows you to set active icon color.
+     allows you to set active icon color.
      
  - tab bar listener:
   
-    allows you to set listener which triggering on start or on end when you set model index.
+     allows you to set listener which triggering on start or on end when you set model index.
         
  - preview colors:
   
-    allows you to set preview colors, which generate count of models equals to count of colors.
+     allows you to set preview colors, which generate count of models equals to count of colors.
 
 Orientation automatically detected according to view size.
+
+By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set badge bg and title color to 0.
 
 If your set ViewPager you can action down on active pointer and do like drag.
 
@@ -150,6 +156,8 @@ navigationTabBar.setTypeface("fonts/custom_font.ttf");
 navigationTabBar.setIsBadged(true);
 navigationTabBar.setIsTitled(true);
 navigationTabBar.setIsBadgeUseTypeface(true);
+navigationTabBar.setBadgeBgColor(Color.RED);
+navigationTabBar.setBadgeTitleColor(Color.WHITE);
 ```
 
 If you want to set the background to NTB, you need to create some view at he bottom of NTB in layout and then set height of your background view like this:
@@ -195,6 +203,8 @@ And XML init:
    app:ntb_title_mode="all"
    app:ntb_badge_position="right"
    app:ntb_badge_gravity="top"
+   app:ntb_badge_bg_color="#ffff0000"
+   app:ntb_badge_title_color="#ffffffff"
    app:ntb_typeface="fonts/custom_typeface.ttf"
    app:ntb_badge_use_typeface="true"/>
 ```
@@ -214,7 +224,7 @@ Inspiration
 
 Tapbar interactions| Circle interactions | Title interactions
 :-------------------------:|:-------------------------:|:-------------------------:
-![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://s-media-cache-ak0.pinimg.com/564x/14/eb/dd/14ebddfc0d92f02be3d61ede48a9da6e.jpg)
+![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://lh4.googleusercontent.com/-SLKBsDGJW-o/Vy3SOiBZN3I/AAAAAAAACbQ/bD2a8m4tAbsmAN5UCcco69sMgya8eCs0ACL0B/w321-h552-no/ttbbntb.gif)
 
 Thanks to [Valery Nuzhniy](https://www.pinterest.com/hevbolt/) for NTB badge design.
 
@@ -223,4 +233,4 @@ Author
 
 Made in [DevLight Mobile Agency](https://github.com/DevLight-Mobile-Agency)
 
-Created by [Basil Miller](https://github.com/GIGAMOLE) - [@gigamole](mailto:http://gigamole53@gmail.com)
+Created by [Basil Miller](https://github.com/GIGAMOLE) - [@gigamole](mailto:gigamole53@gmail.com)

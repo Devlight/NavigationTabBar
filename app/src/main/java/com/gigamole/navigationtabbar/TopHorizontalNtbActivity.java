@@ -56,7 +56,7 @@ public class TopHorizontalNtbActivity extends Activity {
             @Override
             public Object instantiateItem(final ViewGroup container, final int position) {
                 final View view = LayoutInflater.from(
-                        getBaseContext()).inflate(R.layout.vp_item, null, false);
+                        getBaseContext()).inflate(R.layout.item_vp, null, false);
 
                 final TextView txtPage = (TextView) view.findViewById(R.id.txt_vp_item_page);
                 txtPage.setText(String.format("Page #%d", position));
