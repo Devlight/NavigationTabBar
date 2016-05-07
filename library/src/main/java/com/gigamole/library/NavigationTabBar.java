@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -110,11 +111,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static Interpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
 
     // NTP and pointer bounds
-    private RectF mBounds = new RectF();
-    private RectF mPointerBounds = new RectF();
+    private final RectF mBounds = new RectF();
+    private final RectF mPointerBounds = new RectF();
     // Badge bounds and bg badge bounds
-    final Rect mBadgeBounds = new Rect();
-    final RectF mBgBadgeBounds = new RectF();
+    private final Rect mBadgeBounds = new Rect();
+    private final RectF mBgBadgeBounds = new RectF();
 
     // Canvas, where all of other canvas will be merged
     private Bitmap mBitmap;
@@ -129,7 +130,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private Canvas mPointerCanvas;
 
     // Main paint
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
             setStyle(Style.FILL);
@@ -137,7 +138,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Pointer paint
-    private Paint mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
             setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
@@ -145,14 +146,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Icons paint
-    private Paint mIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
         }
     };
 
     // Paint for icon mask pointer
-    final Paint mIconPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mIconPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         {
             setStyle(Style.FILL);
             setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
@@ -160,7 +161,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Paint for model title
-    final Paint mModelTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mModelTitlePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
             setColor(Color.WHITE);
@@ -169,7 +170,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Paint for badge
-    final Paint mBadgePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
+    private final Paint mBadgePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
             setTextAlign(Align.CENTER);
@@ -178,12 +179,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     };
 
     // Variables for animator
-    private ValueAnimator mAnimator = new ValueAnimator();
-    private ResizeInterpolator mResizeInterpolator = new ResizeInterpolator();
+    private final ValueAnimator mAnimator = new ValueAnimator();
+    private final ResizeInterpolator mResizeInterpolator = new ResizeInterpolator();
     private int mAnimationDuration;
 
     // NTP models
-    private ArrayList<Model> mModels = new ArrayList<>();
+    private List<Model> mModels = new ArrayList<>();
 
     // Variables for ViewPager
     private ViewPager mViewPager;
@@ -364,11 +365,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         resetScroller();
     }
 
-    public ArrayList<Model> getModels() {
+    public List<Model> getModels() {
         return mModels;
     }
 
-    public void setModels(final ArrayList<Model> models) {
+    public void setModels(final List<Model> models) {
         //Set update listeners to badge model animation
         for (final Model model : models) {
             model.mBadgeAnimator.removeAllUpdateListeners();
@@ -1300,7 +1301,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         private int mColor;
 
         private Bitmap mIcon;
-        private Matrix mIconMatrix = new Matrix();
+        private final Matrix mIconMatrix = new Matrix();
 
         private String mBadgeTitle = "";
         private String mTempBadgeTitle = "";
@@ -1309,7 +1310,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         private boolean mIsBadgeShowed;
         private boolean mIsBadgeUpdated;
 
-        private ValueAnimator mBadgeAnimator = new ValueAnimator();
+        private final ValueAnimator mBadgeAnimator = new ValueAnimator();
 
         private float mInactiveIconScale;
         private float mActiveIconScaleBy;
