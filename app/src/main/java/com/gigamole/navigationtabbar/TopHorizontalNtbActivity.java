@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +58,15 @@ public class TopHorizontalNtbActivity extends Activity {
             @Override
             public Object instantiateItem(final ViewGroup container, final int position) {
                 final View view = LayoutInflater.from(
-                        getBaseContext()).inflate(R.layout.item_vp, null, false);
+                        getBaseContext()).inflate(R.layout.item_vp_list, null, false);
 
-                final TextView txtPage = (TextView) view.findViewById(R.id.txt_vp_item_page);
-                txtPage.setText(String.format("Page #%d", position));
+                final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(
+                                getBaseContext(), LinearLayoutManager.VERTICAL, false
+                        )
+                );
+                recyclerView.setAdapter(new RecycleAdapter());
 
                 container.addView(view);
                 return view;
@@ -89,6 +96,11 @@ public class TopHorizontalNtbActivity extends Activity {
                 final View bgNavigationTabBar = findViewById(R.id.bg_ntb_horizontal);
                 bgNavigationTabBar.getLayoutParams().height = (int) navigationTabBar.getBarHeight();
                 bgNavigationTabBar.requestLayout();
+
+                final View viewPager = findViewById(R.id.vp_horizontal_ntb);
+                ((ViewGroup.MarginLayoutParams) viewPager.getLayoutParams()).topMargin =
+                        (int) -navigationTabBar.getBadgeMargin();
+                viewPager.requestLayout();
             }
         });
 
@@ -122,5 +134,34 @@ public class TopHorizontalNtbActivity extends Activity {
                 }
             }
         });
+    }
+
+    public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHolder> {
+
+        @Override
+        public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+            final View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_list, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            holder.txt.setText(String.format("Navigation Item #%d", position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return 20;
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView txt;
+
+            public ViewHolder(final View itemView) {
+                super(itemView);
+                txt = (TextView) itemView.findViewById(R.id.txt_vp_item_list);
+            }
+        }
     }
 }
