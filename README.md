@@ -5,9 +5,9 @@ NavigationTabBar
 
 Navigation tab bar with colorful interactions.
 
-Horizontal NTB|NTB bottom, badge, all title |NTB top, colored badge, typeface, active title|Vertical NTB|NTB Samples|
+Horizontal NTB|NTB bottom, badge, all title |NTB with CoordinatorLayout|Vertical NTB|NTB Samples|
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh4.googleusercontent.com/-hxXHKG4zMOU/VwLWxDdhxQI/AAAAAAAACQg/gErfodzZlpINFmlWllvuFs6dlRnp_rG9w/w322-h551-no/tbntb.gif)|![](https://lh4.googleusercontent.com/-SLKBsDGJW-o/Vy3SOiBZN3I/AAAAAAAACbQ/bD2a8m4tAbsmAN5UCcco69sMgya8eCs0ACL0B/w321-h552-no/ttbbntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
+![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh4.googleusercontent.com/-hxXHKG4zMOU/VwLWxDdhxQI/AAAAAAAACQg/gErfodzZlpINFmlWllvuFs6dlRnp_rG9w/w322-h551-no/tbntb.gif)|![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
 
 U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
