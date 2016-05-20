@@ -55,6 +55,8 @@ NavigationTabBar requires a minimum SDK version of 11.
 Sample
 ========
 
+<b>Parameters</b>
+
 For NTB you can set such parameters as:
  
  - models:
@@ -129,6 +131,8 @@ For NTB you can set such parameters as:
   
      allows you to set preview colors, which generate count of models equals to count of colors.
 
+<b>Tips</b>
+
 Creation of models occurs through Builder pattern.
 
 ModelBuilder requires two fields: icon and color. Title, badge title and selected icon is optional.
@@ -140,6 +144,8 @@ Orientation automatically detected according to view size.
 By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set badge bg and title color to 0.
 
 If your set ViewPager you can action down on active pointer and do like drag.
+
+<b>Init</b>
 
 Check out in code init:
 
