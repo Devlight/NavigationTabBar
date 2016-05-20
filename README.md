@@ -5,9 +5,9 @@ NavigationTabBar
 
 Navigation tab bar with colorful interactions.
 
-Horizontal NTB|NTB bottom, badge, all title |NTB with CoordinatorLayout|Vertical NTB|NTB Samples|
+Horizontal NTB|NTB with selected icons |NTB with CoordinatorLayout|Vertical NTB|NTB Samples|
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh4.googleusercontent.com/-hxXHKG4zMOU/VwLWxDdhxQI/AAAAAAAACQg/gErfodzZlpINFmlWllvuFs6dlRnp_rG9w/w322-h551-no/tbntb.gif)|![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
+![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh5.googleusercontent.com/-LcHHajuKNzw/Vz77El2lHsI/AAAAAAAACiQ/I0CjrMUP6R4ioH9h8nEe37LCqXmb3GJKACL0B/w317-h552-no/ntbsi.gif)|![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
 
 U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
@@ -33,7 +33,7 @@ dependencies {
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:library:1.1.6'
+compile 'com.github.devlight.navigationtabbar:library:1.1.8'
 ```
 
 Or Maven:
@@ -42,7 +42,7 @@ Or Maven:
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.8</version>
     <type>aar</type>
 </dependency>
 ```
@@ -50,7 +50,7 @@ Or Maven:
 Android SDK Version
 =========
 
-NavigationTabBar requires a minimum sdk version of 11. 
+NavigationTabBar requires a minimum SDK version of 11. 
 
 Sample
 ========
@@ -59,11 +59,15 @@ For NTB you can set such parameters as:
  
  - models:
     
-     allows you to set NTB models, where you set icon color. Can be set up only via code.
+     allows you to set NTB models, where you set icon and color. Can be set up only via code.
     
  - view pager:
      
      allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.    
+
+ - model selected icon:
+    
+     allows you to set selected icon when current model is active.
 
  - model title:
     
@@ -125,6 +129,12 @@ For NTB you can set such parameters as:
   
      allows you to set preview colors, which generate count of models equals to count of colors.
 
+Creation of models occurs through Builder pattern.
+
+ModelBuilder requires two fields: icon and color. Title, badge title and selected icon is optional.
+
+You can set selected icon. Resize and scale of selected icon equals to original icon.
+
 Orientation automatically detected according to view size.
 
 By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set badge bg and title color to 0.
@@ -136,16 +146,46 @@ Check out in code init:
 ```java
 final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
 final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-models.add(new NavigationTabBar.Model(
-        getResources().getDrawable(R.drawable.ic_first), colors[0]));
-models.add(new NavigationTabBar.Model(
-        getResources().getDrawable(R.drawable.ic_second), colors[1]));
-models.add(new NavigationTabBar.Model(
-        getResources().getDrawable(R.drawable.ic_third), colors[2]));
-models.add(new NavigationTabBar.Model(
-        getResources().getDrawable(R.drawable.ic_fourth), colors[3]));
-models.add(new NavigationTabBar.Model(
-        getResources().getDrawable(R.drawable.ic_fifth), colors[4]));
+models.add(
+        new NavigationTabBar.Model.Builder(
+                getResources().getDrawable(R.drawable.ic_first),
+                Color.parseColor(colors[0])
+        ).title("Heart")
+                .badgeTitle("NTB")
+                .build()
+);
+models.add(
+        new NavigationTabBar.Model.Builder(
+                getResources().getDrawable(R.drawable.ic_second),
+                Color.parseColor(colors[1])
+        ).title("Cup")
+                .badgeTitle("with")
+                .build()
+);
+models.add(
+        new NavigationTabBar.Model.Builder(
+                getResources().getDrawable(R.drawable.ic_third),
+                Color.parseColor(colors[2])
+        ).title("Diploma")
+                .badgeTitle("state")
+                .build()
+);
+models.add(
+        new NavigationTabBar.Model.Builder(
+                getResources().getDrawable(R.drawable.ic_fourth),
+                Color.parseColor(colors[3])
+        ).title("Flag")
+                .badgeTitle("icon")
+                .build()
+);
+models.add(
+        new NavigationTabBar.Model.Builder(
+                getResources().getDrawable(R.drawable.ic_fifth),
+                Color.parseColor(colors[4])
+        ).title("Medal")
+                .badgeTitle("777")
+                .build()
+);
 navigationTabBar.setModels(models);
 navigationTabBar.setViewPager(viewPager, 2);
 
@@ -222,7 +262,7 @@ Apache 2.0 and MIT. See [LICENSE](https://github.com/DevLight-Mobile-Agency/Navi
 Inspiration
 ======
 
-Tapbar interactions| Circle interactions | Title interactions
+TapBar interactions| Circle interactions | Title interactions
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://lh4.googleusercontent.com/-SLKBsDGJW-o/Vy3SOiBZN3I/AAAAAAAACbQ/bD2a8m4tAbsmAN5UCcco69sMgya8eCs0ACL0B/w321-h552-no/ttbbntb.gif)
 

@@ -43,6 +43,7 @@
                 app:ntb_badged="true"
                 app:ntb_title_mode="active"
                 app:ntb_titled="true"
+                app:ntb_scaled="false"
                 app:ntb_typeface="fonts/agency.ttf"/>
 
         </FrameLayout>

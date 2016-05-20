@@ -19,7 +19,6 @@ package com.gigamole.library;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -50,10 +49,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -147,6 +144,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Icons paint
     private final Paint mIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
+        {
+            setDither(true);
+        }
+    };
+    private final Paint mSelectedIconPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         {
             setDither(true);
         }
@@ -346,7 +348,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                         previewColors = typedArray.getResources().getStringArray(R.array.default_preview);
 
                     for (String previewColor : previewColors)
-                        mModels.add(new Model(null, Color.parseColor(previewColor)));
+                        mModels.add(new Model.Builder(null, Color.parseColor(previewColor)).build());
                     requestLayout();
                 }
             }
@@ -553,6 +555,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         // Set color filter to wrap icons with inactive color
         mIconPaint.setColorFilter(new PorterDuffColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN));
+        mSelectedIconPaint.setColorFilter(new PorterDuffColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN));
         mModelTitlePaint.setColor(mInactiveColor);
         postInvalidate();
     }
@@ -973,6 +976,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             final float titleLastScale = mIsScaled ? (MAX_FRACTION + TITLE_ACTIVE_SCALE_BY) -
                     (lastInterpolation * TITLE_ACTIVE_SCALE_BY) : titleScale;
 
+            mIconPaint.setAlpha(MAX_ALPHA);
+            if (model.mSelectedIcon != null) mSelectedIconPaint.setAlpha(MAX_ALPHA);
+
             // Check if we handle models from touch on NTP or from ViewPager
             // There is a strange logic of ViewPager onPageScrolled method, so it is
             if (mIsSetIndexFromTabBar) {
@@ -1009,8 +1015,18 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     );
             }
 
-            // Draw model icon
-            mIconsCanvas.drawBitmap(model.mIcon, model.mIconMatrix, mIconPaint);
+            // Draw original model icon
+            if (model.mSelectedIcon == null) {
+                mIconsCanvas.drawBitmap(model.mIcon, model.mIconMatrix, mIconPaint);
+            } else {
+                if (mIconPaint.getAlpha() != MIN_ALPHA)
+                    // Draw original icon when is visible
+                    mIconsCanvas.drawBitmap(model.mIcon, model.mIconMatrix, mIconPaint);
+            }
+            // Draw selected icon when exist and visible
+            if (model.mSelectedIcon != null && mSelectedIconPaint.getAlpha() != MIN_ALPHA)
+                mIconsCanvas.drawBitmap(model.mSelectedIcon, model.mIconMatrix, mSelectedIconPaint);
+
             if (mIsTitled)
                 mIconsCanvas.drawText(
                         isInEditMode() ? PREVIEW_TITLE : model.getTitle(),
@@ -1125,6 +1141,33 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         mModelTitlePaint.setTextSize(mModelTitleSize * textScale);
         if (mTitleMode == TitleMode.ACTIVE) mModelTitlePaint.setAlpha(textAlpha);
+
+        if (model.mSelectedIcon == null) {
+            mIconPaint.setAlpha(MAX_ALPHA);
+            return;
+        }
+
+        // Calculate cross fade alpha between icon and selected icon
+        final float iconAlpha;
+        final float selectedIconAlpha;
+        if (interpolation <= 0.475F) {
+            iconAlpha = MAX_FRACTION - interpolation * 2.1F;
+            selectedIconAlpha = MIN_FRACTION;
+        } else if (interpolation >= 0.525F) {
+            iconAlpha = MIN_FRACTION;
+            selectedIconAlpha = (interpolation - 0.55F) * 1.9F;
+        } else {
+            iconAlpha = MIN_FRACTION;
+            selectedIconAlpha = MIN_FRACTION;
+        }
+
+        mIconPaint.setAlpha(
+                (int) (MAX_ALPHA * clampValue(iconAlpha, MIN_FRACTION, MAX_FRACTION))
+        );
+        mSelectedIconPaint.setAlpha(
+                (int) (MAX_ALPHA * clampValue(selectedIconAlpha, MIN_FRACTION, MAX_FRACTION))
+        );
+
     }
 
     // Method to transform last fraction of NTB and position
@@ -1154,6 +1197,32 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         mModelTitlePaint.setTextSize(mModelTitleSize * textLastScale);
         if (mTitleMode == TitleMode.ACTIVE) mModelTitlePaint.setAlpha(textLastAlpha);
+
+        if (model.mSelectedIcon == null) {
+            mIconPaint.setAlpha(MAX_ALPHA);
+            return;
+        }
+
+        // Calculate cross fade alpha between icon and selected icon
+        final float iconAlpha;
+        final float selectedIconAlpha;
+        if (lastInterpolation <= 0.475F) {
+            iconAlpha = MIN_FRACTION;
+            selectedIconAlpha = MAX_FRACTION - lastInterpolation * 2.1F;
+        } else if (lastInterpolation >= 0.525F) {
+            iconAlpha = (lastInterpolation - 0.55F) * 1.9F;
+            selectedIconAlpha = MIN_FRACTION;
+        } else {
+            iconAlpha = MIN_FRACTION;
+            selectedIconAlpha = MIN_FRACTION;
+        }
+
+        mIconPaint.setAlpha(
+                (int) (MAX_ALPHA * clampValue(iconAlpha, MIN_FRACTION, MAX_FRACTION))
+        );
+        mSelectedIconPaint.setAlpha(
+                (int) (MAX_ALPHA * clampValue(selectedIconAlpha, MIN_FRACTION, MAX_FRACTION))
+        );
     }
 
     // Method to transform others fraction of NTB and position
@@ -1181,6 +1250,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         mModelTitlePaint.setTextSize(mModelTitleSize * (mIsScaled ? 1.0f : textScale));
         if (mTitleMode == TitleMode.ACTIVE) mModelTitlePaint.setAlpha(MIN_ALPHA);
+
+        // Reset icons alpha
+        if (model.mSelectedIcon == null) {
+            mIconPaint.setAlpha(MAX_ALPHA);
+            return;
+        }
+
+        mSelectedIconPaint.setAlpha(MIN_ALPHA);
     }
 
     @Override
@@ -1294,15 +1371,21 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         });
     }
 
+    // Clamp value to max and min bounds
+    private float clampValue(final float value, final float max, final float min) {
+        return Math.max(Math.min(value, min), max);
+    }
+
     // Model class
     public static class Model {
 
-        private String mTitle = "";
         private int mColor;
 
         private Bitmap mIcon;
+        private Bitmap mSelectedIcon;
         private final Matrix mIconMatrix = new Matrix();
 
+        private String mTitle = "";
         private String mBadgeTitle = "";
         private String mTempBadgeTitle = "";
         private float mBadgeFraction;
@@ -1315,23 +1398,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         private float mInactiveIconScale;
         private float mActiveIconScaleBy;
 
-        public Model(final Drawable icon, final int color) {
-            mColor = color;
-            if (icon != null) {
-                if (icon instanceof BitmapDrawable) mIcon = ((BitmapDrawable) icon).getBitmap();
-                else {
-                    mIcon = Bitmap.createBitmap(
-                            icon.getIntrinsicWidth(),
-                            icon.getIntrinsicHeight(),
-                            Bitmap.Config.ARGB_8888
-                    );
-                    final Canvas canvas = new Canvas(mIcon);
-                    icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                    icon.draw(canvas);
-                }
-            } else {
-                mIcon = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
-            }
+        public Model(final Builder builder) {
+            mColor = builder.mColor;
+            mIcon = builder.mIcon;
+            mSelectedIcon = builder.mSelectedIcon;
+            mTitle = builder.mTitle;
+            mBadgeTitle = builder.mBadgeTitle;
 
             mBadgeAnimator.addListener(new Animator.AnimatorListener() {
 
@@ -1362,16 +1434,6 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     if (mIsBadgeUpdated) mBadgeTitle = mTempBadgeTitle;
                 }
             });
-        }
-
-        public Model(final Drawable icon, final int color, final String title) {
-            this(icon, color);
-            mTitle = title;
-        }
-
-        public Model(final Drawable icon, final int color, final String title, final String badgeTitle) {
-            this(icon, color, title);
-            mBadgeTitle = badgeTitle;
         }
 
         public String getTitle() {
@@ -1449,6 +1511,70 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mBadgeAnimator.setRepeatMode(ValueAnimator.RESTART);
             mBadgeAnimator.setRepeatCount(0);
             mBadgeAnimator.start();
+        }
+
+        public static class Builder {
+
+            private int mColor;
+
+            private Bitmap mIcon;
+            private Bitmap mSelectedIcon;
+
+            private String mTitle;
+            private String mBadgeTitle;
+
+            public Builder(final Drawable icon, final int color) {
+                mColor = color;
+
+                if (icon != null) {
+                    if (icon instanceof BitmapDrawable) mIcon = ((BitmapDrawable) icon).getBitmap();
+                    else {
+                        mIcon = Bitmap.createBitmap(
+                                icon.getIntrinsicWidth(),
+                                icon.getIntrinsicHeight(),
+                                Bitmap.Config.ARGB_8888
+                        );
+                        final Canvas canvas = new Canvas(mIcon);
+                        icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                        icon.draw(canvas);
+                    }
+                } else {
+                    mIcon = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
+                }
+            }
+
+            public Builder selectedIcon(final Drawable selectedIcon) {
+                if (selectedIcon != null) {
+                    if (selectedIcon instanceof BitmapDrawable)
+                        mSelectedIcon = ((BitmapDrawable) selectedIcon).getBitmap();
+                    else {
+                        mSelectedIcon = Bitmap.createBitmap(
+                                selectedIcon.getIntrinsicWidth(),
+                                selectedIcon.getIntrinsicHeight(),
+                                Bitmap.Config.ARGB_8888
+                        );
+                        final Canvas canvas = new Canvas(mSelectedIcon);
+                        selectedIcon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                        selectedIcon.draw(canvas);
+                    }
+                } else mSelectedIcon = null;
+
+                return this;
+            }
+
+            public Builder title(final String title) {
+                mTitle = title;
+                return this;
+            }
+
+            public Builder badgeTitle(final String title) {
+                mBadgeTitle = title;
+                return this;
+            }
+
+            public Model build() {
+                return new Model(this);
+            }
         }
     }
 

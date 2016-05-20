@@ -29,14 +29,6 @@ public class TopHorizontalNtbActivity extends Activity {
         initUI();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.runFinalization();
-        Runtime.getRuntime().gc();
-        System.gc();
-    }
-
     private void initUI() {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
         viewPager.setAdapter(new PagerAdapter() {
@@ -77,16 +69,41 @@ public class TopHorizontalNtbActivity extends Activity {
 
         final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(new NavigationTabBar.Model(
-                getResources().getDrawable(R.drawable.ic_first), Color.parseColor(colors[0]), "Heart"));
-        models.add(new NavigationTabBar.Model(
-                getResources().getDrawable(R.drawable.ic_second), Color.parseColor(colors[1]), "Cup"));
-        models.add(new NavigationTabBar.Model(
-                getResources().getDrawable(R.drawable.ic_third), Color.parseColor(colors[2]), "Diploma"));
-        models.add(new NavigationTabBar.Model(
-                getResources().getDrawable(R.drawable.ic_fourth), Color.parseColor(colors[3]), "Flag"));
-        models.add(new NavigationTabBar.Model(
-                getResources().getDrawable(R.drawable.ic_fifth), Color.parseColor(colors[4]), "Medal"));
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_first),
+                        Color.parseColor(colors[0]))
+                        .title("Heart")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_second),
+                        Color.parseColor(colors[1]))
+                        .title("Cup")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_third),
+                        Color.parseColor(colors[2]))
+                        .title("Diploma")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_fourth),
+                        Color.parseColor(colors[3]))
+                        .title("Flag")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_fifth),
+                        Color.parseColor(colors[4]))
+                        .title("Medal")
+                        .build()
+        );
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 2);
 
