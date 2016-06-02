@@ -36,12 +36,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -114,6 +118,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final Rect mBadgeBounds = new Rect();
     private final RectF mBgBadgeBounds = new RectF();
 
+    //external backgroundView for the tab layout
+    private View backgroundView=null;
     // Canvas, where all of other canvas will be merged
     private Bitmap mBitmap;
     private Canvas mCanvas;
@@ -125,6 +131,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     // Canvas for our rect pointer
     private Bitmap mPointerBitmap;
     private Canvas mPointerCanvas;
+
+    private int navBarHeight; //updated in OnMeasure()
+    private boolean isBehaviorTranslationSet = false;
+    private boolean behaviorTranslationEnabled = false;
+    private boolean needHideBottomNavigation = false;
+    private boolean hideBottomNavigationWithAnimation = false;
+    private BottomNavigationTabBarBehavior bottomNavigationBehavior;
+
 
     // Main paint
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
@@ -782,9 +796,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+
         // Get measure size
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int height = MeasureSpec.getSize(heightMeasureSpec);
+        navBarHeight=height;
 
         if (mModels.isEmpty() || width == 0 || height == 0) return;
 
@@ -814,6 +830,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             }
         } else {
             mIsHorizontalOrientation = false;
+            behaviorTranslationEnabled=false; //disable vertical translation in coordinator layout
             mIsTitled = false;
             mIsBadged = false;
 
@@ -871,6 +888,13 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mEndPointerX = mStartPointerX;
             updateIndicatorPosition(MAX_FRACTION);
         }
+
+        if (!isBehaviorTranslationSet) {
+            //The translation behavior has to be set up after the super.onMeasure has been called.
+            setBehaviorTranslationEnabled(behaviorTranslationEnabled);
+            isBehaviorTranslationSet = true;
+        }
+
     }
 
     @Override
@@ -1322,6 +1346,27 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         return savedState;
     }
 
+    /**
+     * set the background view for the tab bar
+     * Also make sure that the background view height  match the tab bar height
+     * you should call this like this:
+     *
+     * @param bg
+     */
+    public void setBackgroundView(final View bg) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                bg.getLayoutParams().height = (int) getBarHeight();
+                bg.requestLayout();
+                backgroundView=bg;
+            }
+        });
+    }
+    public View getBackgroundView() {
+        return backgroundView;
+    }
+
     private static class SavedState extends BaseSavedState {
         int index;
 
@@ -1649,4 +1694,105 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         void onEndTabSelected(final Model model, final int index);
     }
+
+
+    /**
+     * Return if the behavior translation is enabled
+     *
+     * @return a boolean value
+     */
+    public boolean isBehaviorTranslationEnabled() {
+        return behaviorTranslationEnabled;
+    }
+    /**
+     * Set the behavior translation value
+     *
+     * @param behaviorTranslationEnabled boolean for the state
+     */
+    public void setBehaviorTranslationEnabled(boolean behaviorTranslationEnabled) {
+        this.behaviorTranslationEnabled = behaviorTranslationEnabled;
+        if (getParent() instanceof CoordinatorLayout) {
+            ViewGroup.LayoutParams params = getLayoutParams();
+            if (bottomNavigationBehavior == null) {
+                bottomNavigationBehavior = new BottomNavigationTabBarBehavior(behaviorTranslationEnabled);
+            } else {
+                bottomNavigationBehavior.setBehaviorTranslationEnabled(behaviorTranslationEnabled);
+            }
+            ((CoordinatorLayout.LayoutParams) params).setBehavior(bottomNavigationBehavior);
+            if (needHideBottomNavigation) {
+                needHideBottomNavigation = false;
+                bottomNavigationBehavior.hideView(this, navBarHeight, hideBottomNavigationWithAnimation);
+            }
+        }
+    }
+
+    /**
+     * Hide Bottom Navigation with animation
+     */
+    public void hideBottomNavigation() {
+        hideBottomNavigation(true);
+    }
+
+    /**
+     * Hide Bottom Navigation with or without animation
+     *
+     * @param withAnimation Boolean
+     */
+    public void hideBottomNavigation(boolean withAnimation) {
+        if (bottomNavigationBehavior != null) {
+            bottomNavigationBehavior.hideView(this, navBarHeight, withAnimation);
+        } else if (getParent() instanceof CoordinatorLayout) {
+            needHideBottomNavigation = true;
+            hideBottomNavigationWithAnimation = withAnimation;
+        } else {
+            scrollDownView(this,withAnimation);
+            if(backgroundView!=null) {
+                scrollDownView(backgroundView,withAnimation);
+            }
+        }
+    }
+
+
+    /**
+     * Restore Bottom Navigation with animation
+     */
+    public void restoreBottomNavigation() {
+        restoreBottomNavigation(true);
+    }
+
+    /**
+     * Restore Bottom Navigation with or without animation
+     *
+     * @param withAnimation Boolean
+     */
+    public void restoreBottomNavigation(boolean withAnimation) {
+        if (bottomNavigationBehavior != null) {
+            bottomNavigationBehavior.resetOffset(this, withAnimation);
+        } else {
+            // Show bottom navigation
+            scrollUpView(this,withAnimation);
+            if(backgroundView!=null) {
+                scrollUpView(backgroundView,withAnimation);
+            }
+        }
+    }
+
+    private void scrollDownView(View view,boolean withAnimation) {
+        int HIDE_ANIM_DURATION=300;
+        // Hide bottom navigation
+        ViewCompat.animate(view)
+                .translationY(navBarHeight)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .setDuration(withAnimation ? HIDE_ANIM_DURATION : 0)
+                .start();
+    }
+    private void scrollUpView(View view,boolean withAnimation) {
+        int SHOW_ANIM_DURATION=300;
+        ViewCompat.animate(view)
+                .translationY(0)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .setDuration(withAnimation ? SHOW_ANIM_DURATION : 0)
+                .start();
+    }
+
 }
