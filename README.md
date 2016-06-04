@@ -277,7 +277,7 @@ Inspiration
 
 TapBar interactions| Circle interactions | Title interactions
 :-------------------------:|:-------------------------:|:-------------------------:
-![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://lh4.googleusercontent.com/-SLKBsDGJW-o/Vy3SOiBZN3I/AAAAAAAACbQ/bD2a8m4tAbsmAN5UCcco69sMgya8eCs0ACL0B/w321-h552-no/ttbbntb.gif)
+![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://s-media-cache-ak0.pinimg.com/564x/14/eb/dd/14ebddfc0d92f02be3d61ede48a9da6e.jpg)
 
 Thanks to [Valery Nuzhniy](https://www.pinterest.com/hevbolt/) for NTB badge design.
 
