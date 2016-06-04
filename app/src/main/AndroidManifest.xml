@@ -20,6 +20,7 @@
         <activity android:name=".HorizontalNtbActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name=".TopHorizontalNtbActivity"/>
+        <activity android:name=".HorizontalCoordinatorNtbActivity"/>
         <activity android:name=".VerticalNtbActivity"/>
         <activity android:name=".SamplesNtbActivity"/>
     </application>

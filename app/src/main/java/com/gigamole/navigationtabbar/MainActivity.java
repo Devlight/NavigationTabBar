@@ -19,6 +19,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void initUI() {
         final View btnHorizontalNtb = findViewById(R.id.btn_horizontal_ntb);
         btnHorizontalNtb.setOnClickListener(this);
+        final View btnHorizontalCoordinatorNtb = findViewById(R.id.btn_horizontal_coordinator_ntb);
+        btnHorizontalCoordinatorNtb.setOnClickListener(this);
         final View btnTopHorizontalNtb = findViewById(R.id.btn_horizontal_top_ntb);
         btnTopHorizontalNtb.setOnClickListener(this);
         final View btnVerticalNtb = findViewById(R.id.btn_vertical_ntb);
@@ -51,6 +53,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             case R.id.btn_horizontal_top_ntb:
                                 startActivity(
                                         new Intent(MainActivity.this, TopHorizontalNtbActivity.class)
+                                );
+                                break;
+                            case R.id.btn_horizontal_coordinator_ntb:
+                                startActivity(
+                                        new Intent(MainActivity.this, HorizontalCoordinatorNtbActivity.class)
                                 );
                                 break;
                             case R.id.btn_vertical_ntb:

@@ -233,7 +233,12 @@ model.showBadge();
 model.toggleBadge();
 model.updateBadgeTitle("Here some title like NEW or some integer value");
 ```
-            
+          
+To enable translation inside CoordinatorLayout when at bottom of screen:
+```java
+bottomNavigation.setBehaviorTranslationEnabled(true);
+```
+
 Other methods check out in sample.
 
 And XML init:

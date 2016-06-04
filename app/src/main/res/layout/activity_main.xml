@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="4"
+    android:weightSum="5"
     android:background="#423752">
 
     <TextView
@@ -18,7 +18,21 @@
         android:textColor="#9b92b3"
         android:layout_margin="10dp"
         android:background="@drawable/bg_round_rect"/>
-
+    <TextView
+        android:id="@+id/btn_horizontal_coordinator_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Horizontal(Coordinator Layout) NavigationTabBar"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#9b92b3"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_round_rect"/>
     <TextView
         android:id="@+id/btn_horizontal_top_ntb"
         android:layout_width="match_parent"
