@@ -5,10 +5,9 @@ NavigationTabBar
 
 Navigation tab bar with colorful interactions.
 
-Horizontal NTB|NTB with selected icons |NTB with CoordinatorLayout|Vertical NTB|NTB Samples|
-:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh5.googleusercontent.com/-LcHHajuKNzw/Vz77El2lHsI/AAAAAAAACiQ/I0CjrMUP6R4ioH9h8nEe37LCqXmb3GJKACL0B/w317-h552-no/ntbsi.gif)|![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
-
+Horizontal NTB | NTB with bottom behavior | NTB with selected icons | NTB with CoordinatorLayout | Vertical NTB | NTB Samples |
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh4.googleusercontent.com/-mF70XCnMpgk/V1NnK34tnhI/AAAAAAAACkY/z0Z15Q_7gg4fMovWiEvo9agJgz7m933cQCL0B/w323-h552-no/btbntb.gif)|![](https://lh5.googleusercontent.com/-LcHHajuKNzw/Vz77El2lHsI/AAAAAAAACiQ/I0CjrMUP6R4ioH9h8nEe37LCqXmb3GJKACL0B/w317-h552-no/ntbsi.gif)|![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
 U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
 Download
@@ -33,7 +32,7 @@ dependencies {
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:library:1.1.8'
+compile 'com.github.devlight.navigationtabbar:library:1.2.0'
 ```
 
 Or Maven:
@@ -42,7 +41,7 @@ Or Maven:
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
     <artifactId>library</artifactId>
-    <version>1.1.8</version>
+    <version>1.2.0</version>
     <type>aar</type>
 </dependency>
 ```
@@ -63,9 +62,17 @@ For NTB you can set such parameters as:
     
      allows you to set NTB models, where you set icon and color. Can be set up only via code.
     
+ - behavior:
+     
+     allows you to set bottom translation behavior.
+    
  - view pager:
      
-     allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.    
+     allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.
+         
+ - background:
+ 
+    allows you to set background to NTB which automatically set with offset relative to badge gravity.
 
  - model selected icon:
     
@@ -149,6 +156,9 @@ By default badge bg color is the active model color and badge title color is the
 
 If your set ViewPager you can action down on active pointer and do like drag.
 
+If you want to set the background to NTB, just set background via XML or code and its automatically set relative to badge gravity.
+
+
 <b>Init</b>
 
 Check out in code init:
@@ -211,21 +221,7 @@ navigationTabBar.setBadgeBgColor(Color.RED);
 navigationTabBar.setBadgeTitleColor(Color.WHITE);
 ```
 
-If you want to set the background to NTB, you need to create some view at he bottom of NTB in layout and then set height of your background view like this:
-
-```java
-navigationTabBar.post(new Runnable() {
-    @Override
-    public void run() {
-        final View background = findViewById(R.id.background);
-        background.getLayoutParams().height = (int) navigationTabBar.getBarHeight();
-        background.requestLayout();
-    }
-});
-```
-
 If your models is in badge mode you can set title, hide, show, toggle and update badge title like this:
-
 ```java
 model.setTitle("Here some title to model");
 model.hideBadge();
@@ -234,9 +230,9 @@ model.toggleBadge();
 model.updateBadgeTitle("Here some title like NEW or some integer value");
 ```
           
-To enable translation inside CoordinatorLayout when at bottom of screen:
+To enable behavior translation inside CoordinatorLayout when at bottom of screen:
 ```java
-bottomNavigation.setBehaviorTranslationEnabled(true);
+bottomNavigation.setBehaviorEnabled(true);
 ```
 
 Other methods check out in sample.
@@ -244,7 +240,7 @@ Other methods check out in sample.
 And XML init:
 
 ```xml
-<com.gigamole.library.NavigationTabBar
+<com.gigamole.library.ntb.NavigationTabBar
    android:id="@+id/ntb"
    android:layout_width="match_parent"
    android:layout_height="50dp"

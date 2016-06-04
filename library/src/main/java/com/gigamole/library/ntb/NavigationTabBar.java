@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.gigamole.library;
+package com.gigamole.library.ntb;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -53,6 +54,9 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
+import com.gigamole.library.R;
+import com.gigamole.library.behavior.NavigationTabBarBehavior;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +67,7 @@ import java.util.Random;
  */
 public class NavigationTabBar extends View implements ViewPager.OnPageChangeListener {
 
-    // NTP constants
+    // NTB constants
     private final static String PREVIEW_BADGE = "0";
     private final static String PREVIEW_TITLE = "Title";
     private final static int INVALID_INDEX = -1;
@@ -74,53 +78,47 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static int DEFAULT_INACTIVE_COLOR = Color.parseColor("#9f90af");
     private final static int DEFAULT_ACTIVE_COLOR = Color.WHITE;
 
-    private final static float MIN_FRACTION = 0.0f;
-    private final static float NON_SCALED_FRACTION = 0.35f;
-    private final static float MAX_FRACTION = 1.0f;
+    private final static float MIN_FRACTION = 0.0F;
+    private final static float NON_SCALED_FRACTION = 0.35F;
+    private final static float MAX_FRACTION = 1.0F;
 
     private final static int MIN_ALPHA = 0;
     private final static int MAX_ALPHA = 255;
 
-    private final static float ACTIVE_ICON_SCALE_BY = 0.3f;
-    private final static float ICON_SIZE_FRACTION = 0.45f;
+    private final static float ACTIVE_ICON_SCALE_BY = 0.3F;
+    private final static float ICON_SIZE_FRACTION = 0.45F;
 
-    private final static float TITLE_ACTIVE_ICON_SCALE_BY = 0.2f;
-    private final static float TITLE_ICON_SIZE_FRACTION = 0.45f;
-    private final static float TITLE_ACTIVE_SCALE_BY = 0.2f;
-    private final static float TITLE_SIZE_FRACTION = 0.2f;
-    private final static float TITLE_MARGIN_FRACTION = 0.15f;
-    private final static float TITLE_MARGIN_SCALE_FRACTION = 0.25f;
+    private final static float TITLE_ACTIVE_ICON_SCALE_BY = 0.2F;
+    private final static float TITLE_ICON_SIZE_FRACTION = 0.45F;
+    private final static float TITLE_ACTIVE_SCALE_BY = 0.2F;
+    private final static float TITLE_SIZE_FRACTION = 0.2F;
+    private final static float TITLE_MARGIN_FRACTION = 0.15F;
+    private final static float TITLE_MARGIN_SCALE_FRACTION = 0.25F;
 
-    private final static float BADGE_HORIZONTAL_FRACTION = 0.5f;
-    private final static float BADGE_VERTICAL_FRACTION = 0.75f;
-    private final static float BADGE_TITLE_SIZE_FRACTION = 0.9f;
+    private final static float BADGE_HORIZONTAL_FRACTION = 0.5F;
+    private final static float BADGE_VERTICAL_FRACTION = 0.75F;
+    private final static float BADGE_TITLE_SIZE_FRACTION = 0.9F;
 
-    private final static int ALL_INDEX = 0;
-    private final static int ACTIVE_INDEX = 1;
-
-    private final static int LEFT_INDEX = 0;
-    private final static int CENTER_INDEX = 1;
-    private final static int RIGHT_INDEX = 2;
-
-    private final static int TOP_INDEX = 0;
-    private final static int BOTTOM_INDEX = 1;
-
-    private final static float LEFT_FRACTION = 0.25f;
-    private final static float CENTER_FRACTION = 0.5f;
-    private final static float RIGHT_FRACTION = 0.75f;
+    public final static float LEFT_FRACTION = 0.25F;
+    public final static float CENTER_FRACTION = 0.5F;
+    public final static float RIGHT_FRACTION = 0.75F;
 
     private final static Interpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private final static Interpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
+    private final static Interpolator OUT_SLOW_IN_INTERPOLATOR = new LinearOutSlowInInterpolator();
 
-    // NTP and pointer bounds
+    // NTB and pointer bounds
     private final RectF mBounds = new RectF();
     private final RectF mPointerBounds = new RectF();
     // Badge bounds and bg badge bounds
     private final Rect mBadgeBounds = new Rect();
     private final RectF mBgBadgeBounds = new RectF();
 
-    //external backgroundView for the tab layout
-    private View backgroundView=null;
+    // NTB background
+    private Bitmap mBackground;
+    // Check whether need to reload background
+    private boolean mNeedInvalidateBackground = true;
+
     // Canvas, where all of other canvas will be merged
     private Bitmap mBitmap;
     private final Canvas mCanvas = new Canvas();
@@ -137,13 +135,18 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private Bitmap mPointerBitmap;
     private final Canvas mPointerCanvas = new Canvas();
 
-    private int navBarHeight; //updated in OnMeasure()
-    private boolean isBehaviorTranslationSet = false;
-    private boolean behaviorTranslationEnabled = false;
-    private boolean needHideBottomNavigation = false;
-    private boolean hideBottomNavigationWithAnimation = false;
-    private BottomNavigationTabBarBehavior bottomNavigationBehavior;
+    // External background view for the NTB
+//    private View mBackgroundView = null;
+    private NavigationTabBarBehavior mBehavior;
 
+    // Detect if behavior already set
+    private boolean mIsBehaviorSet;
+    // Detect if behavior enabled
+    private boolean mBehaviorEnabled;
+    // Detect if need to hide NTB
+    private boolean mNeedHide;
+    // Detect if need animate animate or force hide
+    private boolean mAnimateHide;
 
     // Main paint
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
@@ -204,7 +207,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final ResizeInterpolator mResizeInterpolator = new ResizeInterpolator();
     private int mAnimationDuration;
 
-    // NTP models
+    // NTB models
     private final List<Model> mModels = new ArrayList<>();
 
     // Variables for ViewPager
@@ -312,12 +315,20 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badge_use_typeface, false)
             );
 
-            setTitleMode(typedArray.getInt(R.styleable.NavigationTabBar_ntb_title_mode, ALL_INDEX));
+            setTitleMode(
+                    typedArray.getInt(
+                            R.styleable.NavigationTabBar_ntb_title_mode, TitleMode.ALL_INDEX
+                    )
+            );
             setBadgePosition(
-                    typedArray.getInt(R.styleable.NavigationTabBar_ntb_badge_position, RIGHT_INDEX)
+                    typedArray.getInt(
+                            R.styleable.NavigationTabBar_ntb_badge_position, BadgePosition.RIGHT_INDEX
+                    )
             );
             setBadgeGravity(
-                    typedArray.getInt(R.styleable.NavigationTabBar_ntb_badge_gravity, TOP_INDEX)
+                    typedArray.getInt(
+                            R.styleable.NavigationTabBar_ntb_badge_gravity, BadgeGravity.TOP_INDEX
+                    )
             );
             setBadgeBgColor(typedArray.getColor(R.styleable.NavigationTabBar_ntb_badge_bg_color, 0));
             setBadgeTitleColor(typedArray.getColor(R.styleable.NavigationTabBar_ntb_badge_title_color, 0));
@@ -339,7 +350,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     )
             );
             setCornersRadius(
-                    typedArray.getDimension(R.styleable.NavigationTabBar_ntb_corners_radius, 0.0f)
+                    typedArray.getDimension(R.styleable.NavigationTabBar_ntb_corners_radius, 0.0F)
             );
 
             // Init animator
@@ -463,10 +474,10 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     private void setTitleMode(final int index) {
         switch (index) {
-            case ACTIVE_INDEX:
+            case TitleMode.ACTIVE_INDEX:
                 setTitleMode(TitleMode.ACTIVE);
                 break;
-            case ALL_INDEX:
+            case TitleMode.ALL_INDEX:
             default:
                 setTitleMode(TitleMode.ALL);
         }
@@ -483,13 +494,13 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     private void setBadgePosition(final int index) {
         switch (index) {
-            case LEFT_INDEX:
+            case BadgePosition.LEFT_INDEX:
                 setBadgePosition(BadgePosition.LEFT);
                 break;
-            case CENTER_INDEX:
+            case BadgePosition.CENTER_INDEX:
                 setBadgePosition(BadgePosition.CENTER);
                 break;
-            case RIGHT_INDEX:
+            case BadgePosition.RIGHT_INDEX:
             default:
                 setBadgePosition(BadgePosition.RIGHT);
         }
@@ -506,10 +517,10 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     private void setBadgeGravity(final int index) {
         switch (index) {
-            case BOTTOM_INDEX:
+            case BadgeGravity.BOTTOM_INDEX:
                 setBadgeGravity(BadgeGravity.BOTTOM);
                 break;
-            case TOP_INDEX:
+            case BadgeGravity.TOP_INDEX:
             default:
                 setBadgeGravity(BadgeGravity.TOP);
         }
@@ -660,7 +671,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         if (mViewPager == viewPager) return;
-        if (mViewPager != null) mViewPager.setOnPageChangeListener(null);
+        if (mViewPager != null) //noinspection deprecation
+            mViewPager.setOnPageChangeListener(null);
         if (viewPager.getAdapter() == null)
             throw new IllegalStateException("ViewPager does not provide adapter instance.");
 
@@ -695,6 +707,28 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     public void setOnPageChangeListener(final ViewPager.OnPageChangeListener listener) {
         mOnPageChangeListener = listener;
+    }
+
+    // Return if the behavior translation is enabled
+    public boolean isBehaviorEnabled() {
+        return mBehaviorEnabled;
+    }
+
+    // Set the behavior translation value
+    public void setBehaviorEnabled(final boolean enabled) {
+        mBehaviorEnabled = enabled;
+
+        if (getParent() != null && getParent() instanceof CoordinatorLayout) {
+            final ViewGroup.LayoutParams params = getLayoutParams();
+            if (mBehavior == null) mBehavior = new NavigationTabBarBehavior(enabled);
+            else mBehavior.setBehaviorTranslationEnabled(enabled);
+
+            ((CoordinatorLayout.LayoutParams) params).setBehavior(mBehavior);
+            if (mNeedHide) {
+                mNeedHide = false;
+                mBehavior.hideView(this, (int) getBarHeight(), mAnimateHide);
+            }
+        }
     }
 
     public int getModelIndex() {
@@ -759,7 +793,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         postInvalidate();
     }
 
-    // Update NTP
+    // Update NTB
     private void notifyDataSetChanged() {
         requestLayout();
         postInvalidate();
@@ -811,15 +845,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         return true;
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-
         // Get measure size
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int height = MeasureSpec.getSize(heightMeasureSpec);
-        navBarHeight=height;
 
         if (mModels.isEmpty() || width == 0 || height == 0) return;
 
@@ -845,12 +878,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                 final Rect badgeBounds = new Rect();
                 mBadgePaint.setTextSize(mBadgeTitleSize);
                 mBadgePaint.getTextBounds(PREVIEW_BADGE, 0, 1, badgeBounds);
-                mBadgeMargin = (badgeBounds.height() * 0.5f) +
+                mBadgeMargin = (badgeBounds.height() * 0.5F) +
                         (mBadgeTitleSize * BADGE_HORIZONTAL_FRACTION * BADGE_VERTICAL_FRACTION);
             }
         } else {
+            // Disable vertical translation in coordinator layout
+            mBehaviorEnabled = false;
+            // Disable other features
             mIsHorizontalOrientation = false;
-            behaviorTranslationEnabled=false; //disable vertical translation in coordinator layout
             mIsTitled = false;
             mIsBadged = false;
 
@@ -859,7 +894,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         // Set bounds for NTB
-        mBounds.set(0.0f, 0.0f, width, height - mBadgeMargin);
+        mBounds.set(0.0F, 0.0F, width, height - mBadgeMargin);
 
         // Set main bitmap
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -915,16 +950,56 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             updateIndicatorPosition(MAX_FRACTION);
         }
 
-        if (!isBehaviorTranslationSet) {
-            //The translation behavior has to be set up after the super.onMeasure has been called.
-            setBehaviorTranslationEnabled(behaviorTranslationEnabled);
-            isBehaviorTranslationSet = true;
+        //The translation behavior has to be set up after the super.onMeasure has been called
+        if (!mIsBehaviorSet) {
+            setBehaviorEnabled(mBehaviorEnabled);
+            mIsBehaviorSet = true;
         }
 
+        if (mBackground == null || mNeedInvalidateBackground) {
+            if (getBackground() != null) {
+                if (getBackground() instanceof BitmapDrawable)
+                    mBackground = ((BitmapDrawable) getBackground()).getBitmap();
+                else {
+                    mBackground = Bitmap.createBitmap(
+                            (int) mBounds.width(), (int) mBounds.height(), Bitmap.Config.ARGB_8888
+                    );
+
+                    final Canvas backgroundCanvas = new Canvas(mBackground);
+                    getBackground().setBounds(
+                            0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight()
+                    );
+                    getBackground().draw(backgroundCanvas);
+                }
+
+                setBackgroundDrawable(null);
+                mNeedInvalidateBackground = false;
+            }
+        }
     }
 
     @Override
+    public void setBackgroundColor(final int color) {
+        mNeedInvalidateBackground = true;
+        super.setBackgroundColor(color);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void setBackgroundDrawable(final Drawable background) {
+        mNeedInvalidateBackground = true;
+        super.setBackgroundDrawable(background);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
     protected void onDraw(final Canvas canvas) {
+        if (mBackground != null)
+            canvas.drawBitmap(
+                    mBackground, 0.0F,
+                    mBadgeGravity == BadgeGravity.TOP ? getBadgeMargin() : 0.0F, null
+            );
+
         if (mCanvas == null || mPointerCanvas == null ||
                 mIconsCanvas == null || mTitlesCanvas == null)
             return;
@@ -936,7 +1011,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         if (mIsTitled) mTitlesCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
         // Get pointer badge margin for gravity
-        final float pointerBadgeMargin = mBadgeGravity == BadgeGravity.TOP ? mBadgeMargin : 0.0f;
+        final float pointerBadgeMargin = mBadgeGravity == BadgeGravity.TOP ? mBadgeMargin : 0.0F;
 
         // Draw our model colors
         for (int i = 0; i < mModels.size(); i++) {
@@ -951,7 +1026,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             } else {
                 final float top = mModelSize * i;
                 final float bottom = top + mModelSize;
-                mCanvas.drawRect(0.0f, top, mBounds.width(), bottom, mPaint);
+                mCanvas.drawRect(0.0F, top, mBounds.width(), bottom, mPaint);
             }
         }
 
@@ -961,14 +1036,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     mPointerLeftTop, pointerBadgeMargin,
                     mPointerRightBottom, mBounds.height() + pointerBadgeMargin
             );
-        else mPointerBounds.set(0.0f, mPointerLeftTop, mBounds.width(), mPointerRightBottom);
+        else mPointerBounds.set(0.0F, mPointerLeftTop, mBounds.width(), mPointerRightBottom);
 
         // Draw pointer for model colors
         if (mCornersRadius == 0) mPointerCanvas.drawRect(mPointerBounds, mPaint);
         else mPointerCanvas.drawRoundRect(mPointerBounds, mCornersRadius, mCornersRadius, mPaint);
 
         // Draw pointer into main canvas
-        mCanvas.drawBitmap(mPointerBitmap, 0.0f, 0.0f, mPointerPaint);
+        mCanvas.drawBitmap(mPointerBitmap, 0.0F, 0.0F, mPointerPaint);
 
         // Set vars for icon when model with title or without
         final float iconMarginTitleHeight = mIconSize + mTitleMargin + mModelTitleSize;
@@ -984,20 +1059,20 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             final float matrixCenterY;
 
             // Set offset to titles
-            final float leftTitleOffset = (mModelSize * i) + (mModelSize * 0.5f);
+            final float leftTitleOffset = (mModelSize * i) + (mModelSize * 0.5F);
             final float topTitleOffset =
-                    mBounds.height() - (mBounds.height() - iconMarginTitleHeight) * 0.5f;
+                    mBounds.height() - (mBounds.height() - iconMarginTitleHeight) * 0.5F;
 
             if (mIsHorizontalOrientation) {
-                leftOffset = (mModelSize * i) + (mModelSize - model.mIcon.getWidth()) * 0.5f;
-                topOffset = (mBounds.height() - model.mIcon.getHeight()) * 0.5f;
+                leftOffset = (mModelSize * i) + (mModelSize - model.mIcon.getWidth()) * 0.5F;
+                topOffset = (mBounds.height() - model.mIcon.getHeight()) * 0.5F;
             } else {
-                leftOffset = (mBounds.width() - (float) model.mIcon.getWidth()) * 0.5f;
-                topOffset = (mModelSize * i) + (mModelSize - (float) model.mIcon.getHeight()) * 0.5f;
+                leftOffset = (mBounds.width() - (float) model.mIcon.getWidth()) * 0.5F;
+                topOffset = (mModelSize * i) + (mModelSize - (float) model.mIcon.getHeight()) * 0.5F;
             }
 
-            matrixCenterX = leftOffset + (float) model.mIcon.getWidth() * 0.5f;
-            matrixCenterY = topOffset + (float) model.mIcon.getHeight() * 0.5f;
+            matrixCenterX = leftOffset + (float) model.mIcon.getWidth() * 0.5F;
+            matrixCenterY = topOffset + (float) model.mIcon.getHeight() * 0.5F;
 
             // Title translate position
             final float titleTranslate =
@@ -1031,7 +1106,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mIconPaint.setAlpha(MAX_ALPHA);
             if (model.mSelectedIcon != null) mSelectedIconPaint.setAlpha(MAX_ALPHA);
 
-            // Check if we handle models from touch on NTP or from ViewPager
+            // Check if we handle models from touch on NTB or from ViewPager
             // There is a strange logic
             // of ViewPager onPageScrolled method, so it is
             if (mIsSetIndexFromTabBar) {
@@ -1110,11 +1185,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         // Draw general bitmap
-        canvas.drawBitmap(mBitmap, 0.0f, 0.0f, null);
+        canvas.drawBitmap(mBitmap, 0.0F, 0.0F, null);
         // Draw icons bitmap on top
-        canvas.drawBitmap(mIconsBitmap, 0.0f, pointerBadgeMargin, null);
+        canvas.drawBitmap(mIconsBitmap, 0.0F, pointerBadgeMargin, null);
         // Draw titles bitmap on top
-        if (mIsTitled) canvas.drawBitmap(mTitlesBitmap, 0.0f, pointerBadgeMargin, null);
+        if (mIsTitled) canvas.drawBitmap(mTitlesBitmap, 0.0F, pointerBadgeMargin, null);
 
         // If is not badged, exit
         if (!mIsBadged) return;
@@ -1123,7 +1198,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         final float modelBadgeMargin =
                 mBadgeGravity == BadgeGravity.TOP ? mBadgeMargin : mBounds.height();
         final float modelBadgeOffset =
-                mBadgeGravity == BadgeGravity.TOP ? 0.0f : mBounds.height() - mBadgeMargin;
+                mBadgeGravity == BadgeGravity.TOP ? 0.0F : mBounds.height() - mBadgeMargin;
 
         for (int i = 0; i < mModels.size(); i++) {
             final Model model = mModels.get(i);
@@ -1147,18 +1222,20 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     (mModelSize * i) + (mModelSize * mBadgePosition.mPositionFraction);
 
             // If is badge title only one char, so create circle else round rect
+            final float badgeMargin = mBadgeMargin * model.mBadgeFraction;
             if (model.getBadgeTitle().length() == 1) {
-                final float badgeMargin = mBadgeMargin * model.mBadgeFraction;
                 mBgBadgeBounds.set(
                         badgeBoundsHorizontalOffset - badgeMargin, modelBadgeMargin - badgeMargin,
                         badgeBoundsHorizontalOffset + badgeMargin, modelBadgeMargin + badgeMargin
                 );
             } else
                 mBgBadgeBounds.set(
-                        badgeBoundsHorizontalOffset - mBadgeBounds.centerX() - horizontalPadding,
-                        modelBadgeMargin - (mBadgeMargin * model.mBadgeFraction),
-                        badgeBoundsHorizontalOffset + mBadgeBounds.centerX() + horizontalPadding,
-                        modelBadgeOffset + (verticalPadding * 2.0f) + mBadgeBounds.height()
+                        badgeBoundsHorizontalOffset -
+                                Math.max(badgeMargin, mBadgeBounds.centerX() + horizontalPadding),
+                        modelBadgeMargin - badgeMargin,
+                        badgeBoundsHorizontalOffset +
+                                Math.max(badgeMargin, mBadgeBounds.centerX() + horizontalPadding),
+                        modelBadgeOffset + (verticalPadding * 2.0F) + mBadgeBounds.height()
                 );
 
             // Set color and alpha for badge bg
@@ -1167,17 +1244,18 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mBadgePaint.setAlpha((int) (MAX_ALPHA * model.mBadgeFraction));
 
             // Set corners to round rect for badge bg and draw
-            final float cornerRadius = mBgBadgeBounds.height() * 0.5f;
+            final float cornerRadius = mBgBadgeBounds.height() * 0.5F;
             canvas.drawRoundRect(mBgBadgeBounds, cornerRadius, cornerRadius, mBadgePaint);
 
             // Set color and alpha for badge title
             if (model.mBadgeFraction == MIN_FRACTION) mBadgePaint.setColor(Color.TRANSPARENT);
-            else mBadgePaint.setColor(mBadgeTitleColor == 0 ? model.getColor() : mBadgeTitleColor);
+            else //noinspection ResourceAsColor
+                mBadgePaint.setColor(mBadgeTitleColor == 0 ? model.getColor() : mBadgeTitleColor);
             mBadgePaint.setAlpha((int) (MAX_ALPHA * model.mBadgeFraction));
 
             // Set badge title center position and draw title
-            final float badgeHalfHeight = mBadgeBounds.height() * 0.5f;
-            float badgeVerticalOffset = (mBgBadgeBounds.height() * 0.5f) + badgeHalfHeight -
+            final float badgeHalfHeight = mBadgeBounds.height() * 0.5F;
+            float badgeVerticalOffset = (mBgBadgeBounds.height() * 0.5F) + badgeHalfHeight -
                     mBadgeBounds.bottom + modelBadgeOffset;
             canvas.drawText(
                     model.getBadgeTitle(), badgeBoundsHorizontalOffset, badgeVerticalOffset +
@@ -1318,7 +1396,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     matrixCenterX, matrixCenterY
             );
 
-        mModelTitlePaint.setTextSize(mModelTitleSize * (mIsScaled ? 1.0f : textScale));
+        mModelTitlePaint.setTextSize(mModelTitleSize * (mIsScaled ? 1.0F : textScale));
         if (mTitleMode == TitleMode.ACTIVE) mModelTitlePaint.setAlpha(MIN_ALPHA);
 
         // Reset icons alpha
@@ -1408,29 +1486,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         return savedState;
     }
 
-    /**
-     * set the background view for the tab bar
-     * Also make sure that the background view height  match the tab bar height
-     * you should call this like this:
-     *
-     * @param bg
-     */
-    public void setBackgroundView(final View bg) {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                bg.getLayoutParams().height = (int) getBarHeight();
-                bg.requestLayout();
-                backgroundView=bg;
-            }
-        });
-    }
-    public View getBackgroundView() {
-        return backgroundView;
-    }
-
     private static class SavedState extends BaseSavedState {
-        int index;
+
+        private int index;
 
         public SavedState(Parcelable superState) {
             super(superState);
@@ -1481,6 +1539,50 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     // Clamp value to max and min bounds
     private float clampValue(final float value, final float max, final float min) {
         return Math.max(Math.min(value, min), max);
+    }
+
+    // Hide NTB with animation
+    public void hide() {
+        hide(true);
+    }
+
+    // Hide NTB with or without animation
+    public void hide(final boolean withAnimation) {
+        if (mBehavior != null) mBehavior.hideView(this, (int) getBarHeight(), withAnimation);
+        else if (getParent() != null && getParent() instanceof CoordinatorLayout) {
+            mNeedHide = true;
+            mAnimateHide = withAnimation;
+        } else scrollDown(withAnimation);
+    }
+
+    // Show NTB with animation
+    public void show() {
+        show(true);
+    }
+
+    // Show NTB with or without animation
+    public void show(final boolean withAnimation) {
+        if (mBehavior != null)
+            mBehavior.resetOffset(this, withAnimation);
+        else scrollUp(withAnimation);
+    }
+
+    // Hide NTB or bg on scroll down
+    private void scrollDown(final boolean withAnimation) {
+        ViewCompat.animate(this)
+                .translationY(getBarHeight())
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .setDuration(withAnimation ? DEFAULT_ANIMATION_DURATION : 0)
+                .start();
+    }
+
+    // Show NTB or bg on scroll up
+    private void scrollUp(final boolean withAnimation) {
+        ViewCompat.animate(this)
+                .translationY(0.0F)
+                .setInterpolator(OUT_SLOW_IN_INTERPOLATOR)
+                .setDuration(withAnimation ? DEFAULT_ANIMATION_DURATION : 0)
+                .start();
     }
 
     // Model class
@@ -1708,14 +1810,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private class ResizeInterpolator implements Interpolator {
 
         // Spring factor
-        private final float mFactor = 1.0f;
+        private final static float FACTOR = 1.0F;
         // Check whether side we move
         private boolean mResizeIn;
 
         @Override
         public float getInterpolation(final float input) {
-            if (mResizeIn) return (float) (1.0f - Math.pow((1.0f - input), 2.0f * mFactor));
-            else return (float) (Math.pow(input, 2.0f * mFactor));
+            if (mResizeIn) return (float) (1.0F - Math.pow((1.0F - input), 2.0F * FACTOR));
+            else return (float) (Math.pow(input, 2.0F * FACTOR));
         }
 
         public float getResizeInterpolation(final float input, final boolean resizeIn) {
@@ -1726,13 +1828,21 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Model title mode
     public enum TitleMode {
-        ALL, ACTIVE
+
+        ALL, ACTIVE;
+
+        public final static int ALL_INDEX = 0;
+        public final static int ACTIVE_INDEX = 1;
     }
 
     // Model badge position
     public enum BadgePosition {
 
         LEFT(LEFT_FRACTION), CENTER(CENTER_FRACTION), RIGHT(RIGHT_FRACTION);
+
+        public final static int LEFT_INDEX = 0;
+        public final static int CENTER_INDEX = 1;
+        public final static int RIGHT_INDEX = 2;
 
         private float mPositionFraction;
 
@@ -1747,7 +1857,11 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Model badge gravity
     public enum BadgeGravity {
-        TOP, BOTTOM
+
+        TOP, BOTTOM;
+
+        public final static int TOP_INDEX = 0;
+        public final static int BOTTOM_INDEX = 1;
     }
 
     // Out listener for selected index
@@ -1756,105 +1870,4 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         void onEndTabSelected(final Model model, final int index);
     }
-
-
-    /**
-     * Return if the behavior translation is enabled
-     *
-     * @return a boolean value
-     */
-    public boolean isBehaviorTranslationEnabled() {
-        return behaviorTranslationEnabled;
-    }
-    /**
-     * Set the behavior translation value
-     *
-     * @param behaviorTranslationEnabled boolean for the state
-     */
-    public void setBehaviorTranslationEnabled(boolean behaviorTranslationEnabled) {
-        this.behaviorTranslationEnabled = behaviorTranslationEnabled;
-        if (getParent() instanceof CoordinatorLayout) {
-            ViewGroup.LayoutParams params = getLayoutParams();
-            if (bottomNavigationBehavior == null) {
-                bottomNavigationBehavior = new BottomNavigationTabBarBehavior(behaviorTranslationEnabled);
-            } else {
-                bottomNavigationBehavior.setBehaviorTranslationEnabled(behaviorTranslationEnabled);
-            }
-            ((CoordinatorLayout.LayoutParams) params).setBehavior(bottomNavigationBehavior);
-            if (needHideBottomNavigation) {
-                needHideBottomNavigation = false;
-                bottomNavigationBehavior.hideView(this, navBarHeight, hideBottomNavigationWithAnimation);
-            }
-        }
-    }
-
-    /**
-     * Hide Bottom Navigation with animation
-     */
-    public void hideBottomNavigation() {
-        hideBottomNavigation(true);
-    }
-
-    /**
-     * Hide Bottom Navigation with or without animation
-     *
-     * @param withAnimation Boolean
-     */
-    public void hideBottomNavigation(boolean withAnimation) {
-        if (bottomNavigationBehavior != null) {
-            bottomNavigationBehavior.hideView(this, navBarHeight, withAnimation);
-        } else if (getParent() instanceof CoordinatorLayout) {
-            needHideBottomNavigation = true;
-            hideBottomNavigationWithAnimation = withAnimation;
-        } else {
-            scrollDownView(this,withAnimation);
-            if(backgroundView!=null) {
-                scrollDownView(backgroundView,withAnimation);
-            }
-        }
-    }
-
-
-    /**
-     * Restore Bottom Navigation with animation
-     */
-    public void restoreBottomNavigation() {
-        restoreBottomNavigation(true);
-    }
-
-    /**
-     * Restore Bottom Navigation with or without animation
-     *
-     * @param withAnimation Boolean
-     */
-    public void restoreBottomNavigation(boolean withAnimation) {
-        if (bottomNavigationBehavior != null) {
-            bottomNavigationBehavior.resetOffset(this, withAnimation);
-        } else {
-            // Show bottom navigation
-            scrollUpView(this,withAnimation);
-            if(backgroundView!=null) {
-                scrollUpView(backgroundView,withAnimation);
-            }
-        }
-    }
-
-    private void scrollDownView(View view,boolean withAnimation) {
-        int HIDE_ANIM_DURATION=300;
-        // Hide bottom navigation
-        ViewCompat.animate(view)
-                .translationY(navBarHeight)
-                .setInterpolator(new LinearOutSlowInInterpolator())
-                .setDuration(withAnimation ? HIDE_ANIM_DURATION : 0)
-                .start();
-    }
-    private void scrollUpView(View view,boolean withAnimation) {
-        int SHOW_ANIM_DURATION=300;
-        ViewCompat.animate(view)
-                .translationY(0)
-                .setInterpolator(new LinearOutSlowInInterpolator())
-                .setDuration(withAnimation ? SHOW_ANIM_DURATION : 0)
-                .start();
-    }
-
 }

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gigamole.library.NavigationTabBar;
+import com.gigamole.library.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -110,10 +110,6 @@ public class TopHorizontalNtbActivity extends Activity {
         navigationTabBar.post(new Runnable() {
             @Override
             public void run() {
-                final View bgNavigationTabBar = findViewById(R.id.bg_ntb_horizontal);
-                bgNavigationTabBar.getLayoutParams().height = (int) navigationTabBar.getBarHeight();
-                bgNavigationTabBar.requestLayout();
-
                 final View viewPager = findViewById(R.id.vp_horizontal_ntb);
                 ((ViewGroup.MarginLayoutParams) viewPager.getLayoutParams()).topMargin =
                         (int) -navigationTabBar.getBadgeMargin();

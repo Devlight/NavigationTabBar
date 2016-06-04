@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#423752"
@@ -10,32 +11,38 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_app_bar_height"
+        android:layout_height="180dp"
         android:fitsSystemWindows="true"
-        android:background="#00000000"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="#423752"
+            app:title="@string/app_name"
+            app:expandedTitleTextAppearance="@null"
+            app:contentScrim="#605271"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
             <ImageView
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
+                android:background="#605271"
                 android:src="@drawable/ic_eighth"
-                app:layout_collapseMode="pin" />
+                android:tint="#9f90af"
+                android:padding="32dp"
+                app:layout_collapseMode="pin"/>
 
             <android.support.v7.widget.Toolbar
-                android:fitsSystemWindows="true"
-                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                app:popupTheme="@style/AppTheme.AppBarOverlay" />
+                app:title="@string/app_name"
+                app:popupTheme="@style/AppTheme.AppBarOverlay"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -46,45 +53,30 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-
-    <View
-        android:id="@+id/mask"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="bottom"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="64dp"
-        android:src="@android:drawable/ic_dialog_email"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="64dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="76dp"
         android:layout_marginRight="16dp"
-        app:backgroundTint="#ffff0000"/>
+        android:layout_marginEnd="16dp"
+        android:tint="#9f90af"
+        android:src="@drawable/ic_first"
+        app:backgroundTint="#605271"/>
 
-
-        <View
-            android:id="@+id/bg_ntb_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_gravity="bottom"
-            android:background="#605271" />
-
-        <com.gigamole.library.NavigationTabBar
-            android:id="@+id/ntb_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="bottom"
-            app:ntb_badge_bg_color="#ffff0000"
-            app:ntb_badge_gravity="bottom"
-            app:ntb_badge_position="left"
-            app:ntb_badge_title_color="#ffffffff"
-            app:ntb_badge_use_typeface="true"
-            app:ntb_badged="true"
-            app:ntb_scaled="false"
-            app:ntb_title_mode="active"
-            app:ntb_titled="true"
-            app:ntb_typeface="fonts/agency.ttf" />
+    <com.gigamole.library.ntb.NavigationTabBar
+        android:id="@+id/ntb_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="#605271"
+        app:ntb_badge_bg_color="#ffff0000"
+        app:ntb_badge_gravity="top"
+        app:ntb_badge_position="left"
+        app:ntb_badge_title_color="#ffffffff"
+        app:ntb_badge_use_typeface="true"
+        app:ntb_badged="true"
+        app:ntb_typeface="fonts/agency.ttf"/>
 
 </android.support.design.widget.CoordinatorLayout>

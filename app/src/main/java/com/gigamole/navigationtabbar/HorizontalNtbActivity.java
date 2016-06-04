@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gigamole.library.NavigationTabBar;
+import com.gigamole.library.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 
@@ -24,14 +24,6 @@ public class HorizontalNtbActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_ntb);
         initUI();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.runFinalization();
-        Runtime.getRuntime().gc();
-        System.gc();
     }
 
     private void initUI() {
@@ -131,15 +123,6 @@ public class HorizontalNtbActivity extends Activity {
             @Override
             public void onPageScrollStateChanged(final int state) {
 
-            }
-        });
-
-        navigationTabBar.post(new Runnable() {
-            @Override
-            public void run() {
-                final View bgNavigationTabBar = findViewById(R.id.bg_ntb_horizontal);
-                bgNavigationTabBar.getLayoutParams().height = (int) navigationTabBar.getBarHeight();
-                bgNavigationTabBar.requestLayout();
             }
         });
 

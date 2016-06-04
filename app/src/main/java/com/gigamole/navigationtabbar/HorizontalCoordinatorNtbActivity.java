@@ -3,6 +3,9 @@ package com.gigamole.navigationtabbar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gigamole.library.NavigationTabBar;
+import com.gigamole.library.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -104,26 +107,12 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
                         .title("Medal")
                         .build()
         );
-        //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
-        navigationTabBar.setBehaviorTranslationEnabled(true);
 
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 2);
 
-        final View bgNavigationTabBar = findViewById(R.id.bg_ntb_horizontal);
-        //THE FOLLOWING LINE IS IMPORTANT IF YOU WANT THE BACKGROUND VIEW SCROLL BEHAVIOUR TO MATCH
-        //THE TABBAR SCROLL BEHAVIOR IN THE COORDINATOR LAYOUT
-        navigationTabBar.setBackgroundView(bgNavigationTabBar);
-
-        navigationTabBar.post(new Runnable() {
-            @Override
-            public void run() {
-                final View viewPager = findViewById(R.id.vp_horizontal_ntb);
-                ((ViewGroup.MarginLayoutParams) viewPager.getLayoutParams()).topMargin =
-                        (int) -navigationTabBar.getBadgeMargin();
-                viewPager.requestLayout();
-            }
-        });
+        //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
+        navigationTabBar.setBehaviorEnabled(true);
 
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
             @Override
@@ -137,7 +126,8 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
             }
         });
 
-        findViewById(R.id.mask).setOnClickListener(new View.OnClickListener() {
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.parent);
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 for (int i = 0; i < navigationTabBar.getModels().size(); i++) {
@@ -153,8 +143,24 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
                         }
                     }, i * 100);
                 }
+
+                coordinatorLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Coordinator NTB", Snackbar.LENGTH_SHORT);
+                        snackbar.getView().setBackgroundColor(Color.parseColor("#9b92b3"));
+                        ((TextView) snackbar.getView().findViewById(R.id.snackbar_text))
+                                .setTextColor(Color.parseColor("#423752"));
+                        snackbar.show();
+                    }
+                }, 1000);
             }
         });
+
+        final CollapsingToolbarLayout collapsingToolbarLayout =
+                (CollapsingToolbarLayout) findViewById(R.id.toolbar);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#009F90AF"));
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#9f90af"));
     }
 
     public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHolder> {

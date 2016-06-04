@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gigamole.library.NavigationTabBar;
+import com.gigamole.library.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 
