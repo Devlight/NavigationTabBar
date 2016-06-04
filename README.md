@@ -91,6 +91,10 @@ For NTB you can set such parameters as:
     
      allows you to handle mode of the model icon and title scale.
      
+ - tint mode:
+     
+      allows you to enable or disable icon tinting.
+     
  - badge position:
  
      allows you to set the badge position in you model. Can be: left(25%), center(50%) and right(75%).
@@ -201,6 +205,7 @@ navigationTabBar.setBadgePosition(NavigationTabBar.BadgePosition.CENTER);
 navigationTabBar.setTypeface("fonts/custom_font.ttf");
 navigationTabBar.setIsBadged(true);
 navigationTabBar.setIsTitled(true);
+navigationTabBar.setIsTinted(true);
 navigationTabBar.setIsBadgeUseTypeface(true);
 navigationTabBar.setBadgeBgColor(Color.RED);
 navigationTabBar.setBadgeTitleColor(Color.WHITE);
@@ -246,6 +251,7 @@ And XML init:
    app:ntb_badged="true"
    app:ntb_titled="true"
    app:ntb_scaled="true"
+   app:ntb_tinted="true"
    app:ntb_title_mode="all"
    app:ntb_badge_position="right"
    app:ntb_badge_gravity="top"

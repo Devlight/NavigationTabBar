@@ -85,6 +85,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static float TITLE_ACTIVE_SCALE_BY = 0.2f;
     private final static float TITLE_SIZE_FRACTION = 0.2f;
     private final static float TITLE_MARGIN_FRACTION = 0.15f;
+    private final static float TITLE_MARGIN_SCALE_FRACTION = 0.25f;
 
     private final static float BADGE_HORIZONTAL_FRACTION = 0.5f;
     private final static float BADGE_VERTICAL_FRACTION = 0.75f;
@@ -116,15 +117,19 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Canvas, where all of other canvas will be merged
     private Bitmap mBitmap;
-    private Canvas mCanvas;
+    private final Canvas mCanvas = new Canvas();
 
     // Canvas with icons
     private Bitmap mIconsBitmap;
-    private Canvas mIconsCanvas;
+    private final Canvas mIconsCanvas = new Canvas();
+
+    // Canvas with titles
+    private Bitmap mTitlesBitmap;
+    private final Canvas mTitlesCanvas = new Canvas();
 
     // Canvas for our rect pointer
     private Bitmap mPointerBitmap;
-    private Canvas mPointerCanvas;
+    private final Canvas mPointerCanvas = new Canvas();
 
     // Main paint
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
@@ -186,7 +191,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private int mAnimationDuration;
 
     // NTP models
-    private List<Model> mModels = new ArrayList<>();
+    private final List<Model> mModels = new ArrayList<>();
 
     // Variables for ViewPager
     private ViewPager mViewPager;
@@ -199,7 +204,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Variables for sizes
     private float mModelSize;
-    private int mIconSize;
+    private float mIconSize;
     // Corners radius for rect mode
     private float mCornersRadius;
 
@@ -242,6 +247,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private boolean mIsBadged;
     // Detect if model icon scaled
     private boolean mIsScaled;
+    // Detect if model icon tinted
+    private boolean mIsTinted;
     // Detect if model badge have custom typeface
     private boolean mIsBadgeUseTypeface;
     // Detect if is bar mode or indicator pager mode
@@ -286,6 +293,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             setIsTitled(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_titled, false));
             setIsBadged(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badged, false));
             setIsScaled(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_scaled, true));
+            setIsTinted(typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_tinted, true));
             setIsBadgeUseTypeface(
                     typedArray.getBoolean(R.styleable.NavigationTabBar_ntb_badge_use_typeface, false)
             );
@@ -385,7 +393,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         mModels.clear();
-        mModels = models;
+        mModels.addAll(models);
         requestLayout();
     }
 
@@ -414,6 +422,15 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     public void setIsScaled(final boolean isScaled) {
         mIsScaled = isScaled;
         requestLayout();
+    }
+
+    public boolean isTinted() {
+        return mIsTinted;
+    }
+
+    public void setIsTinted(final boolean isTinted) {
+        mIsTinted = isTinted;
+        updateTint();
     }
 
     public boolean isBadgeUseTypeface() {
@@ -542,8 +559,10 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     public void setActiveColor(final int activeColor) {
         mActiveColor = activeColor;
-        mIconPointerPaint.setColor(activeColor);
-        postInvalidate();
+
+        // Set icon pointer active color
+        mIconPointerPaint.setColor(mActiveColor);
+        updateTint();
     }
 
     public int getInactiveColor() {
@@ -553,11 +572,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     public void setInactiveColor(final int inactiveColor) {
         mInactiveColor = inactiveColor;
 
-        // Set color filter to wrap icons with inactive color
-        mIconPaint.setColorFilter(new PorterDuffColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN));
-        mSelectedIconPaint.setColorFilter(new PorterDuffColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN));
+        // Set inactive color to title
         mModelTitlePaint.setColor(mInactiveColor);
-        postInvalidate();
+        updateTint();
     }
 
     public float getCornersRadius() {
@@ -698,7 +715,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mViewPager.setCurrentItem(index, true);
         }
 
-        // Set startX and endX for animation, where we animate two sides of rect with different interpolation
+        // Set startX and endX for animation,
+        // where we animate two sides of rect with different interpolation
         mStartPointerX = mPointerLeftTop;
         mEndPointerX = mIndex * mModelSize;
 
@@ -729,6 +747,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Update NTP
     private void notifyDataSetChanged() {
+        requestLayout();
         postInvalidate();
     }
 
@@ -792,13 +811,14 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         if (width > height) {
             mIsHorizontalOrientation = true;
 
+            // Get model size
+            mModelSize = (float) width / (float) mModels.size();
+
             // Get smaller side
             float side = mModelSize > height ? height : mModelSize;
             if (mIsBadged) side -= side * TITLE_SIZE_FRACTION;
 
-            mModelSize = (float) width / (float) mModels.size();
-            mIconSize = (int) (side * (mIsTitled ? TITLE_ICON_SIZE_FRACTION : ICON_SIZE_FRACTION));
-
+            mIconSize = side * (mIsTitled ? TITLE_ICON_SIZE_FRACTION : ICON_SIZE_FRACTION);
             mModelTitleSize = side * TITLE_SIZE_FRACTION;
             mTitleMargin = side * TITLE_MARGIN_FRACTION;
 
@@ -826,21 +846,27 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         // Set main bitmap
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
+        mCanvas.setBitmap(mBitmap);
 
         // Set pointer canvas
         mPointerBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mPointerCanvas = new Canvas(mPointerBitmap);
+        mPointerCanvas.setBitmap(mPointerBitmap);
 
         // Set icons canvas
         mIconsBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mIconsCanvas = new Canvas(mIconsBitmap);
+        mIconsCanvas.setBitmap(mIconsBitmap);
+
+        // Set titles canvas
+        if (mIsTitled) {
+            mTitlesBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            mTitlesCanvas.setBitmap(mTitlesBitmap);
+        } else mTitlesBitmap = null;
 
         // Set scale fraction for icons
         for (Model model : mModels) {
             final float originalIconSize = model.mIcon.getWidth() > model.mIcon.getHeight() ?
                     model.mIcon.getWidth() : model.mIcon.getHeight();
-            model.mInactiveIconScale = (float) mIconSize / originalIconSize;
+            model.mInactiveIconScale = mIconSize / originalIconSize;
             model.mActiveIconScaleBy = model.mInactiveIconScale *
                     (mIsTitled ? TITLE_ACTIVE_ICON_SCALE_BY : ACTIVE_ICON_SCALE_BY);
         }
@@ -875,12 +901,15 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     @Override
     protected void onDraw(final Canvas canvas) {
-        if (mCanvas == null || mPointerCanvas == null || mIconsCanvas == null) return;
+        if (mCanvas == null || mPointerCanvas == null ||
+                mIconsCanvas == null || mTitlesCanvas == null)
+            return;
 
         // Reset and clear canvases
         mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         mPointerCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         mIconsCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+        if (mIsTitled) mTitlesCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
         // Get pointer badge margin for gravity
         final float pointerBadgeMargin = mBadgeGravity == BadgeGravity.TOP ? mBadgeMargin : 0.0f;
@@ -917,6 +946,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         // Draw pointer into main canvas
         mCanvas.drawBitmap(mPointerBitmap, 0.0f, 0.0f, mPointerPaint);
 
+        // Set vars for icon when model with title or without
+        final float iconMarginTitleHeight = mIconSize + mTitleMargin + mModelTitleSize;
+
         // Draw model icons
         for (int i = 0; i < mModels.size(); i++) {
             final Model model = mModels.get(i);
@@ -927,8 +959,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             final float matrixCenterX;
             final float matrixCenterY;
 
-            // Set vars for icon when model with title or without
-            final float iconMarginTitleHeight = mIconSize + mTitleMargin + mModelTitleSize;
+            // Set offset to titles
             final float leftTitleOffset = (mModelSize * i) + (mModelSize * 0.5f);
             final float topTitleOffset =
                     mBounds.height() - (mBounds.height() - iconMarginTitleHeight) * 0.5f;
@@ -936,20 +967,17 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             if (mIsHorizontalOrientation) {
                 leftOffset = (mModelSize * i) + (mModelSize - model.mIcon.getWidth()) * 0.5f;
                 topOffset = (mBounds.height() - model.mIcon.getHeight()) * 0.5f;
-
-                matrixCenterX = leftOffset + model.mIcon.getWidth() * 0.5f;
-                matrixCenterY = topOffset + model.mIcon.getHeight() * 0.5f +
-                        (mIsTitled && mTitleMode == TitleMode.ALL ? mTitleMargin * 0.5f : 0.0f);
             } else {
-                leftOffset = (mBounds.width() - model.mIcon.getWidth()) * 0.5f;
-                topOffset = (mModelSize * i) + (mModelSize - model.mIcon.getHeight()) * 0.5f;
-
-                matrixCenterX = leftOffset + model.mIcon.getWidth() * 0.5f;
-                matrixCenterY = topOffset + model.mIcon.getHeight() * 0.5f;
+                leftOffset = (mBounds.width() - (float) model.mIcon.getWidth()) * 0.5f;
+                topOffset = (mModelSize * i) + (mModelSize - (float) model.mIcon.getHeight()) * 0.5f;
             }
 
+            matrixCenterX = leftOffset + (float) model.mIcon.getWidth() * 0.5f;
+            matrixCenterY = topOffset + (float) model.mIcon.getHeight() * 0.5f;
+
             // Title translate position
-            final float titleTranslate = -model.mIcon.getHeight() + topTitleOffset - mTitleMargin * 0.5f;
+            final float titleTranslate =
+                    topOffset - model.mIcon.getHeight() * TITLE_MARGIN_SCALE_FRACTION;
 
             // Translate icon to model center
             model.mIconMatrix.setTranslate(
@@ -980,7 +1008,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             if (model.mSelectedIcon != null) mSelectedIconPaint.setAlpha(MAX_ALPHA);
 
             // Check if we handle models from touch on NTP or from ViewPager
-            // There is a strange logic of ViewPager onPageScrolled method, so it is
+            // There is a strange logic
+            // of ViewPager onPageScrolled method, so it is
             if (mIsSetIndexFromTabBar) {
                 if (mIndex == i)
                     updateCurrentModel(
@@ -1025,24 +1054,43 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             }
             // Draw selected icon when exist and visible
             if (model.mSelectedIcon != null && mSelectedIconPaint.getAlpha() != MIN_ALPHA)
-                mIconsCanvas.drawBitmap(model.mSelectedIcon, model.mIconMatrix, mSelectedIconPaint);
+                mIconsCanvas.drawBitmap(
+                        model.mSelectedIcon, model.mIconMatrix, mSelectedIconPaint
+                );
 
             if (mIsTitled)
-                mIconsCanvas.drawText(
+                mTitlesCanvas.drawText(
                         isInEditMode() ? PREVIEW_TITLE : model.getTitle(),
                         leftTitleOffset, topTitleOffset, mModelTitlePaint
                 );
         }
 
-        // Draw pointer with active color to wrap out active icon
-        if (mCornersRadius == 0) mIconsCanvas.drawRect(mPointerBounds, mIconPointerPaint);
-        else
-            mIconsCanvas.drawRoundRect(mPointerBounds, mCornersRadius, mCornersRadius, mIconPointerPaint);
+        // Reset pointer bounds for icons and titles
+        if (mIsHorizontalOrientation)
+            mPointerBounds.set(
+                    mPointerLeftTop, 0.0F,
+                    mPointerRightBottom, mBounds.height()
+            );
+        if (mCornersRadius == 0) {
+            if (mIsTinted) mIconsCanvas.drawRect(mPointerBounds, mIconPointerPaint);
+            if (mIsTitled) mTitlesCanvas.drawRect(mPointerBounds, mIconPointerPaint);
+        } else {
+            if (mIsTinted)
+                mIconsCanvas.drawRoundRect(
+                        mPointerBounds, mCornersRadius, mCornersRadius, mIconPointerPaint
+                );
+            if (mIsTitled)
+                mTitlesCanvas.drawRoundRect(
+                        mPointerBounds, mCornersRadius, mCornersRadius, mIconPointerPaint
+                );
+        }
 
         // Draw general bitmap
         canvas.drawBitmap(mBitmap, 0.0f, 0.0f, null);
         // Draw icons bitmap on top
         canvas.drawBitmap(mIconsBitmap, 0.0f, pointerBadgeMargin, null);
+        // Draw titles bitmap on top
+        if (mIsTitled) canvas.drawBitmap(mTitlesBitmap, 0.0f, pointerBadgeMargin, null);
 
         // If is not badged, exit
         if (!mIsBadged) return;
@@ -1135,8 +1183,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         model.mIconMatrix.postScale(
                 model.mInactiveIconScale + matrixScale, model.mInactiveIconScale + matrixScale,
-                matrixCenterX, matrixCenterY + (mIsTitled && mTitleMode == TitleMode.ACTIVE ?
-                        mTitleMargin * 0.5f * interpolation : 0.0f)
+                matrixCenterX, matrixCenterY
         );
 
         mModelTitlePaint.setTextSize(mModelTitleSize * textScale);
@@ -1191,8 +1238,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         model.mIconMatrix.postScale(
                 model.mInactiveIconScale + model.mActiveIconScaleBy - matrixLastScale,
                 model.mInactiveIconScale + model.mActiveIconScaleBy - matrixLastScale,
-                matrixCenterX, matrixCenterY + (mIsTitled && mTitleMode == TitleMode.ACTIVE ?
-                        mTitleMargin * 0.5f - (mTitleMargin * 0.5f * lastInterpolation) : 0.0f)
+                matrixCenterX, matrixCenterY
         );
 
         mModelTitlePaint.setTextSize(mModelTitleSize * textLastScale);
@@ -1258,6 +1304,22 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         mSelectedIconPaint.setAlpha(MIN_ALPHA);
+    }
+
+    private void updateTint() {
+        if (mIsTinted) {
+            // Set color filter to wrap icons with inactive color
+            final PorterDuffColorFilter colorFilter =
+                    new PorterDuffColorFilter(mInactiveColor, PorterDuff.Mode.SRC_IN);
+            mIconPaint.setColorFilter(colorFilter);
+            mSelectedIconPaint.setColorFilter(colorFilter);
+        } else {
+            // Reset active and inactive colors
+            mIconPaint.reset();
+            mSelectedIconPaint.reset();
+        }
+
+        postInvalidate();
     }
 
     @Override
