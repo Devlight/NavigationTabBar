@@ -1,5 +1,5 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-blue.svg?style=flat-square)](http://android-arsenal.com/details/1/3382)
-[![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabstrip/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabstrip/_latestVersion)
+[![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabbar/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabbar/_latestVersion)
 
 NavigationTabBar
 ===================
