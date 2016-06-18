@@ -1,4 +1,5 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-blue.svg?style=flat-square)](http://android-arsenal.com/details/1/3382)
+[![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabstrip/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabstrip/_latestVersion)
 
 NavigationTabBar
 ===================
@@ -25,14 +26,14 @@ dependencies {
             url  'http://dl.bintray.com/gigamole/maven/'
         }
     }
-    compile 'com.github.devlight.navigationtabbar:library:+'
+    compile 'com.github.devlight.navigationtabbar:navigationtabbar:+'
 }
 ```
 
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:library:1.2.0'
+compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.1'
 ```
 
 Or Maven:
@@ -40,8 +41,8 @@ Or Maven:
 ```groovy
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
-    <artifactId>library</artifactId>
-    <version>1.2.0</version>
+    <artifactId>navigationtabbar</artifactId>
+    <version>1.2.1</version>
     <type>aar</type>
 </dependency>
 ```
