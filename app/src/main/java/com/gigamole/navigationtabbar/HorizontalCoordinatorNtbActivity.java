@@ -147,7 +147,7 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
                 coordinatorLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Coordinator NTB", Snackbar.LENGTH_SHORT);
+                        final Snackbar snackbar = Snackbar.make(navigationTabBar, "Coordinator NTB", Snackbar.LENGTH_SHORT);
                         snackbar.getView().setBackgroundColor(Color.parseColor("#9b92b3"));
                         ((TextView) snackbar.getView().findViewById(R.id.snackbar_text))
                                 .setTextColor(Color.parseColor("#423752"));

@@ -71,7 +71,7 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, NavigationTabBar child, View dependency) {
         updateSnackbar(child, dependency);
-        updateFloatingActionButton(child, dependency);
+        updateFloatingActionButton(dependency);
         return super.layoutDependsOn(parent, child, dependency);
     }
 
@@ -264,7 +264,12 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
             if (mSnackbarHeight == -1) mSnackbarHeight = dependency.getHeight();
             final int targetMargin = (int) (child.getBarHeight() - child.getTranslationY());
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) child.bringToFront();
+            child.bringToFront();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dependency.setStateListAnimator(null);
+                dependency.setElevation(0.0F);
+            }
+
             if (dependency.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                 final ViewGroup.MarginLayoutParams p =
                         (ViewGroup.MarginLayoutParams) dependency.getLayoutParams();
@@ -276,7 +281,7 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
     }
 
     // Update floating action button bottom margin
-    public void updateFloatingActionButton(final NavigationTabBar child, final View dependency) {
+    public void updateFloatingActionButton(final View dependency) {
         if (dependency != null && dependency instanceof FloatingActionButton) {
             mFloatingActionButton = (FloatingActionButton) dependency;
 
