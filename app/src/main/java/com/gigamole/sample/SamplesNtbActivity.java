@@ -1,4 +1,4 @@
-package com.gigamole.navigationtabbar;
+package com.gigamole.sample;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.graphics.ColorUtils;
 import android.widget.Toast;
 
-import com.gigamole.library.ntb.NavigationTabBar;
+import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 

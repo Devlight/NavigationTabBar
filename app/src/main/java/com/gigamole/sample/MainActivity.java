@@ -1,4 +1,4 @@
-package com.gigamole.navigationtabbar;
+package com.gigamole.sample;
 
 import android.app.Activity;
 import android.content.Intent;

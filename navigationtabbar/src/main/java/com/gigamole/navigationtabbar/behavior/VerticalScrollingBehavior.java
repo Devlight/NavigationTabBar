@@ -1,4 +1,4 @@
-package com.gigamole.library.behavior;
+package com.gigamole.navigationtabbar.behavior;
 
 
 import android.content.Context;

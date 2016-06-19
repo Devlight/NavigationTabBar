@@ -241,7 +241,7 @@ Other methods check out in sample.
 And XML init:
 
 ```xml
-<com.gigamole.library.ntb.NavigationTabBar
+<com.gigamole.navigationtabbar.ntb.NavigationTabBar
    android:id="@+id/ntb"
    android:layout_width="match_parent"
    android:layout_height="50dp"
