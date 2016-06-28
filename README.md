@@ -33,7 +33,7 @@ dependencies {
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.2'
+compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.3'
 ```
 
 Or Maven:
@@ -42,7 +42,7 @@ Or Maven:
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
     <artifactId>navigationtabbar</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <type>aar</type>
 </dependency>
 ```
@@ -71,9 +71,9 @@ For NTB you can set such parameters as:
      
      allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.
          
- - background:
+ - background color:
  
-    allows you to set background to NTB which automatically set with offset relative to badge gravity.
+    allows you to set background to NTB which automatically set with offset relative to badge gravity and corners radius.
 
  - model selected icon:
     
@@ -95,13 +95,21 @@ For NTB you can set such parameters as:
    
      allows you to handle mode of the model title show. Can show all or only active.
      
+ - title size:
+    
+     allows you to set titles size. 
+     
  - scale mode:
     
      allows you to handle mode of the model icon and title scale.
      
  - tint mode:
      
-      allows you to enable or disable icon tinting.
+     allows you to enable or disable icon tinting.
+      
+ - badge size:
+     
+     allows you to set badges size.
      
  - badge position:
  
@@ -153,12 +161,11 @@ You can set selected icon. Resize and scale of selected icon equals to original 
 
 Orientation automatically detected according to view size.
 
-By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set badge bg and title color to 0.
+By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set AUTO_COLOR value to badge bg and title color.
 
-If your set ViewPager you can action down on active pointer and do like drag.
+By default badge sizes and title sizes is auto fit. To reset calculation just set AUTO_SIZE value to badge size and title size.
 
-If you want to set the background to NTB, just set background via XML or code and its automatically set relative to badge gravity.
-
+If your set ViewPager and enable swipe you can action down on active pointer and do like drag.
 
 <b>Init</b>
 
@@ -220,6 +227,10 @@ navigationTabBar.setIsTinted(true);
 navigationTabBar.setIsBadgeUseTypeface(true);
 navigationTabBar.setBadgeBgColor(Color.RED);
 navigationTabBar.setBadgeTitleColor(Color.WHITE);
+navigationTabBar.setIsSwiped(true);
+navigationTabBar.setBgColor(Color.BLACK);
+navigationTabBar.setBadgeSize(10);
+navigationTabBar.setTitleSize(10);
 ```
 
 If your models is in badge mode you can set title, hide, show, toggle and update badge title like this:
@@ -233,7 +244,12 @@ model.updateBadgeTitle("Here some title like NEW or some integer value");
           
 To enable behavior translation inside CoordinatorLayout when at bottom of screen:
 ```java
-bottomNavigation.setBehaviorEnabled(true);
+navigationTabBar.setBehaviorEnabled(true);
+```
+
+To deselect active index and reset pointer:
+```java
+navigationTabBar.deselect();
 ```
 
 Other methods check out in sample.
@@ -260,7 +276,11 @@ And XML init:
    app:ntb_badge_bg_color="#ffff0000"
    app:ntb_badge_title_color="#ffffffff"
    app:ntb_typeface="fonts/custom_typeface.ttf"
-   app:ntb_badge_use_typeface="true"/>
+   app:ntb_badge_use_typeface="true"
+   app:ntb_swiped="true"
+   app:ntb_bg_color="#000"
+   app:ntb_badge_size="10sp"
+   app:ntb_title_size="10sp"/>
 ```
 
 Getting Help

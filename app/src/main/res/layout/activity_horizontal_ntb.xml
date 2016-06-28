@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#423752"
     android:orientation="vertical">
 
@@ -17,13 +18,13 @@
         android:id="@+id/ntb_horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#605271"
         app:ntb_badge_gravity="top"
         app:ntb_badge_position="right"
         app:ntb_badged="true"
         app:ntb_scaled="true"
         app:ntb_tinted="true"
         app:ntb_title_mode="all"
-        app:ntb_titled="true"/>
+        app:ntb_titled="true"
+        app:ntb_swiped="true"/>
 
 </LinearLayout>

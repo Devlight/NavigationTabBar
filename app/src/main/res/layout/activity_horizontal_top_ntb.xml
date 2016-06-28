@@ -24,11 +24,12 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <com.gigamole.library.ntb.NavigationTabBar
+            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
                 android:id="@+id/ntb_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="#605271"
+                app:ntb_bg_color="#605271"
+                app:ntb_title_size="15sp"
                 app:ntb_badge_bg_color="#ffff0000"
                 app:ntb_badge_gravity="bottom"
                 app:ntb_badge_position="left"

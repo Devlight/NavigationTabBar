@@ -22,6 +22,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':navigationtabbar')
+//    compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.2'
+
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'

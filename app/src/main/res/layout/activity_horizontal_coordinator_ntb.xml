@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
-        android:background="#605271"
+        app:ntb_badge_size="12sp"
         app:ntb_badge_bg_color="#ffff0000"
         app:ntb_badge_gravity="top"
         app:ntb_badge_position="left"

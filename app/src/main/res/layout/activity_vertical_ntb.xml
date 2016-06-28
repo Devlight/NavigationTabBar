@@ -10,7 +10,6 @@
     <com.gigamole.navigationtabbar.ntb.NavigationTabBar
         android:id="@+id/ntb_vertical"
         android:layout_width="50dp"
-        android:background="#605271"
         android:layout_height="match_parent"
         app:ntb_preview_colors="@array/vertical_ntb"/>
 
