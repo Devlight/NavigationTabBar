@@ -792,9 +792,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     }
 
     // Set model index from touch or programmatically
-    public void setModelIndex(int index, boolean force) {
+    public void setModelIndex(final int modelIndex, final boolean isForce) {
         if (mAnimator.isRunning()) return;
         if (mModels.isEmpty()) return;
+
+        int index = modelIndex;
+        boolean force = isForce;
 
         // This check gives us opportunity to have an non selected model
         if (mIndex == INVALID_INDEX) force = true;
@@ -1466,8 +1469,6 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     @Override
     public void onPageScrolled(int position, float positionOffset, final int positionOffsetPixels) {
-        //Fix the wrong position problem for some devices
-        position = position + (int) positionOffset;
         if (mOnPageChangeListener != null)
             mOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
 
