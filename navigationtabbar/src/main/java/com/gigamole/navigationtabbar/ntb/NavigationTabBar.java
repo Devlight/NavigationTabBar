@@ -68,8 +68,7 @@ import java.util.Random;
  * Created by GIGAMOLE on 24.03.2016.
  */
 @SuppressWarnings({"unused", "DefaultFileTemplate"})
-public class NavigationTabBar extends View implements
-        ViewPager.OnPageChangeListener {
+public class NavigationTabBar extends View implements ViewPager.OnPageChangeListener {
 
     // NTB constants
     private final static int FLAGS =
@@ -1308,9 +1307,16 @@ public class NavigationTabBar extends View implements
 
     // Method to transform current fraction of NTB and position
     private void updateCurrentModel(
-            final Model model, final float leftOffset, final float topOffset, final float titleTranslate,
-            final float interpolation, final float matrixCenterX, final float matrixCenterY,
-            final float matrixScale, final float textScale, final int textAlpha
+            final Model model,
+            final float leftOffset,
+            final float topOffset,
+            final float titleTranslate,
+            final float interpolation,
+            final float matrixCenterX,
+            final float matrixCenterY,
+            final float matrixScale,
+            final float textScale,
+            final int textAlpha
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(
@@ -1355,9 +1361,16 @@ public class NavigationTabBar extends View implements
 
     // Method to transform last fraction of NTB and position
     private void updateLastModel(
-            final Model model, final float leftOffset, final float topOffset, final float titleTranslate,
-            final float lastInterpolation, final float matrixCenterX, final float matrixCenterY,
-            final float matrixLastScale, final float textLastScale, final int textLastAlpha
+            final Model model,
+            final float leftOffset,
+            final float topOffset,
+            final float titleTranslate,
+            final float lastInterpolation,
+            final float matrixCenterX,
+            final float matrixCenterY,
+            final float matrixLastScale,
+            final float textLastScale,
+            final int textLastAlpha
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(
@@ -1402,8 +1415,13 @@ public class NavigationTabBar extends View implements
 
     // Method to transform others fraction of NTB and position
     private void updateInactiveModel(
-            final Model model, final float leftOffset, final float topOffset, final float textScale,
-            final float matrixScale, final float matrixCenterX, final float matrixCenterY
+            final Model model,
+            final float leftOffset,
+            final float topOffset,
+            final float textScale,
+            final float matrixScale,
+            final float matrixCenterX,
+            final float matrixCenterY
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(leftOffset, topOffset);
