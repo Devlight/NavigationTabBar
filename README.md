@@ -1,5 +1,6 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-blue.svg?style=flat-square)](http://android-arsenal.com/details/1/3382)
 [![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabbar/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabbar/_latestVersion)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/06516143fa4448c5a5166ac8873d5527)](https://www.codacy.com/app/gigamole53/NavigationTabBar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DevLight-Mobile-Agency/NavigationTabBar&amp;utm_campaign=Badge_Grade)
 
 NavigationTabBar
 ===================
@@ -296,9 +297,9 @@ Apache 2.0 and MIT. See [LICENSE](https://github.com/DevLight-Mobile-Agency/Navi
 Inspiration
 ======
 
-TapBar interactions| Circle interactions | Title interactions
-:-------------------------:|:-------------------------:|:-------------------------:
-![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://s-media-cache-ak0.pinimg.com/564x/14/eb/dd/14ebddfc0d92f02be3d61ede48a9da6e.jpg)
+TapBar interactions| Circle interactions | Title interactions | Player interactions
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](https://s-media-cache-ak0.pinimg.com/originals/39/ee/33/39ee330f3460bd638284f0576bc95b65.gif)|![](https://s-media-cache-ak0.pinimg.com/564x/f4/0d/a9/f40da9e5b73eb5e0e46681eba38f1347.jpg)|![](https://s-media-cache-ak0.pinimg.com/564x/14/eb/dd/14ebddfc0d92f02be3d61ede48a9da6e.jpg)|![](https://d13yacurqjgara.cloudfront.net/users/25514/screenshots/1367175/attachments/195679/Sleep-Tracker-iPhone-UI-ramotion.png)
 
 Thanks to [Valery Nuzhniy](https://www.pinterest.com/hevbolt/) for NTB badge design.
 

@@ -17,6 +17,7 @@
 package com.gigamole.navigationtabbar.ntb;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -66,7 +67,9 @@ import java.util.Random;
 /**
  * Created by GIGAMOLE on 24.03.2016.
  */
-public class NavigationTabBar extends View implements ViewPager.OnPageChangeListener {
+@SuppressWarnings({"unused", "DefaultFileTemplate"})
+public class NavigationTabBar extends View implements
+        ViewPager.OnPageChangeListener {
 
     // NTB constants
     private final static int FLAGS =
@@ -108,9 +111,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static float BADGE_VERTICAL_FRACTION = 0.75F;
     private final static float BADGE_TITLE_SIZE_FRACTION = 0.9F;
 
-    public final static float LEFT_FRACTION = 0.25F;
-    public final static float CENTER_FRACTION = 0.5F;
-    public final static float RIGHT_FRACTION = 0.75F;
+    private final static float LEFT_FRACTION = 0.25F;
+    private final static float CENTER_FRACTION = 0.5F;
+    private final static float RIGHT_FRACTION = 0.75F;
 
     private final static Interpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private final static Interpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
@@ -516,6 +519,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             case TitleMode.ALL_INDEX:
             default:
                 setTitleMode(TitleMode.ALL);
+                break;
         }
     }
 
@@ -539,6 +543,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             case BadgePosition.RIGHT_INDEX:
             default:
                 setBadgePosition(BadgePosition.RIGHT);
+                break;
         }
     }
 
@@ -559,6 +564,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             case BadgeGravity.TOP_INDEX:
             default:
                 setBadgeGravity(BadgeGravity.TOP);
+                break;
         }
     }
 
@@ -684,7 +690,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         mOnTabBarSelectedIndexListener = onTabBarSelectedIndexListener;
 
         if (mAnimatorListener == null)
-            mAnimatorListener = new Animator.AnimatorListener() {
+            mAnimatorListener = new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(final Animator animation) {
                     if (mOnTabBarSelectedIndexListener != null)
@@ -704,16 +710,6 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     if (mOnTabBarSelectedIndexListener != null)
                         mOnTabBarSelectedIndexListener.onEndTabSelected(mModels.get(mIndex), mIndex);
                 }
-
-                @Override
-                public void onAnimationCancel(final Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(final Animator animation) {
-
-                }
             };
         mAnimator.removeListener(mAnimatorListener);
         mAnimator.addListener(mAnimatorListener);
@@ -726,7 +722,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             return;
         }
 
-        if (mViewPager == viewPager) return;
+        if (viewPager.equals(mViewPager)) return;
         if (mViewPager != null) //noinspection deprecation
             mViewPager.setOnPageChangeListener(null);
         if (viewPager.getAdapter() == null)
@@ -1312,16 +1308,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     // Method to transform current fraction of NTB and position
     private void updateCurrentModel(
-            final Model model,
-            final float leftOffset,
-            final float topOffset,
-            final float titleTranslate,
-            final float interpolation,
-            final float matrixCenterX,
-            final float matrixCenterY,
-            final float matrixScale,
-            final float textScale,
-            final int textAlpha
+            final Model model, final float leftOffset, final float topOffset, final float titleTranslate,
+            final float interpolation, final float matrixCenterX, final float matrixCenterY,
+            final float matrixScale, final float textScale, final int textAlpha
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(
@@ -1356,26 +1345,19 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         mIconPaint.setAlpha(
-                (int) (MAX_ALPHA * clampValue(iconAlpha, MIN_FRACTION, MAX_FRACTION))
+                (int) (MAX_ALPHA * clampValue(iconAlpha))
         );
         mSelectedIconPaint.setAlpha(
-                (int) (MAX_ALPHA * clampValue(selectedIconAlpha, MIN_FRACTION, MAX_FRACTION))
+                (int) (MAX_ALPHA * clampValue(selectedIconAlpha))
         );
 
     }
 
     // Method to transform last fraction of NTB and position
     private void updateLastModel(
-            final Model model,
-            final float leftOffset,
-            final float topOffset,
-            final float titleTranslate,
-            final float lastInterpolation,
-            final float matrixCenterX,
-            final float matrixCenterY,
-            final float matrixLastScale,
-            final float textLastScale,
-            final int textLastAlpha
+            final Model model, final float leftOffset, final float topOffset, final float titleTranslate,
+            final float lastInterpolation, final float matrixCenterX, final float matrixCenterY,
+            final float matrixLastScale, final float textLastScale, final int textLastAlpha
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(
@@ -1411,22 +1393,17 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         mIconPaint.setAlpha(
-                (int) (MAX_ALPHA * clampValue(iconAlpha, MIN_FRACTION, MAX_FRACTION))
+                (int) (MAX_ALPHA * clampValue(iconAlpha))
         );
         mSelectedIconPaint.setAlpha(
-                (int) (MAX_ALPHA * clampValue(selectedIconAlpha, MIN_FRACTION, MAX_FRACTION))
+                (int) (MAX_ALPHA * clampValue(selectedIconAlpha))
         );
     }
 
     // Method to transform others fraction of NTB and position
     private void updateInactiveModel(
-            final Model model,
-            final float leftOffset,
-            final float topOffset,
-            final float textScale,
-            final float matrixScale,
-            final float matrixCenterX,
-            final float matrixCenterY
+            final Model model, final float leftOffset, final float topOffset, final float textScale,
+            final float matrixScale, final float matrixCenterX, final float matrixCenterY
     ) {
         if (mIsTitled && mTitleMode == TitleMode.ACTIVE)
             model.mIconMatrix.setTranslate(leftOffset, topOffset);
@@ -1496,6 +1473,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
     @Override
     public void onPageSelected(final int position) {
+        // This method is empty, because we call onPageSelected() when scroll state is idle
     }
 
     @Override
@@ -1578,51 +1556,40 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     }
 
     // Clamp value to max and min bounds
-    private float clampValue(final float value, final float max, final float min) {
-        return Math.max(Math.min(value, min), max);
+    private float clampValue(final float value) {
+        return Math.max(Math.min(value, NavigationTabBar.MAX_FRACTION), NavigationTabBar.MIN_FRACTION);
     }
 
     // Hide NTB with animation
     public void hide() {
-        hide(true);
-    }
-
-    // Hide NTB with or without animation
-    public void hide(final boolean withAnimation) {
-        if (mBehavior != null) mBehavior.hideView(this, (int) getBarHeight(), withAnimation);
+        if (mBehavior != null) mBehavior.hideView(this, (int) getBarHeight(), true);
         else if (getParent() != null && getParent() instanceof CoordinatorLayout) {
             mNeedHide = true;
-            mAnimateHide = withAnimation;
-        } else scrollDown(withAnimation);
+            mAnimateHide = true;
+        } else scrollDown();
     }
 
     // Show NTB with animation
     public void show() {
-        show(true);
-    }
-
-    // Show NTB with or without animation
-    public void show(final boolean withAnimation) {
-        if (mBehavior != null)
-            mBehavior.resetOffset(this, withAnimation);
-        else scrollUp(withAnimation);
+        if (mBehavior != null) mBehavior.resetOffset(this, true);
+        else scrollUp();
     }
 
     // Hide NTB or bg on scroll down
-    private void scrollDown(final boolean withAnimation) {
+    private void scrollDown() {
         ViewCompat.animate(this)
                 .translationY(getBarHeight())
                 .setInterpolator(new LinearOutSlowInInterpolator())
-                .setDuration(withAnimation ? DEFAULT_ANIMATION_DURATION : 0)
+                .setDuration(DEFAULT_ANIMATION_DURATION)
                 .start();
     }
 
     // Show NTB or bg on scroll up
-    private void scrollUp(final boolean withAnimation) {
+    private void scrollUp() {
         ViewCompat.animate(this)
                 .translationY(0.0F)
                 .setInterpolator(OUT_SLOW_IN_INTERPOLATOR)
-                .setDuration(withAnimation ? DEFAULT_ANIMATION_DURATION : 0)
+                .setDuration(DEFAULT_ANIMATION_DURATION)
                 .start();
     }
 
@@ -1631,8 +1598,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         private int mColor;
 
-        private Bitmap mIcon;
-        private Bitmap mSelectedIcon;
+        private final Bitmap mIcon;
+        private final Bitmap mSelectedIcon;
         private final Matrix mIconMatrix = new Matrix();
 
         private String mTitle = "";
@@ -1655,7 +1622,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mTitle = builder.mTitle;
             mBadgeTitle = builder.mBadgeTitle;
 
-            mBadgeAnimator.addListener(new Animator.AnimatorListener() {
+            mBadgeAnimator.addListener(new AnimatorListenerAdapter() {
 
                 @Override
                 public void onAnimationStart(final Animator animation) {
@@ -1671,11 +1638,6 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
                     // Detect whether we just update text and don`t reset show state
                     if (!mIsBadgeUpdated) mIsBadgeShowed = !mIsBadgeShowed;
                     else mIsBadgeUpdated = false;
-                }
-
-                @Override
-                public void onAnimationCancel(final Animator animation) {
-
                 }
 
                 @Override
@@ -1765,9 +1727,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         public static class Builder {
 
-            private int mColor;
+            private final int mColor;
 
-            private Bitmap mIcon;
+            private final Bitmap mIcon;
             private Bitmap mSelectedIcon;
 
             private String mTitle;
@@ -1883,11 +1845,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         public final static int CENTER_INDEX = 1;
         public final static int RIGHT_INDEX = 2;
 
-        private float mPositionFraction;
-
-        BadgePosition() {
-            mPositionFraction = RIGHT_FRACTION;
-        }
+        private final float mPositionFraction;
 
         BadgePosition(final float positionFraction) {
             mPositionFraction = positionFraction;

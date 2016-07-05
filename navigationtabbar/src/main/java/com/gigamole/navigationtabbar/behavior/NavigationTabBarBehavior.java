@@ -2,8 +2,6 @@ package com.gigamole.navigationtabbar.behavior;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,12 +10,10 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorUpdateListener;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
-import com.gigamole.navigationtabbar.R;
 import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
 
 public class NavigationTabBarBehavior extends VerticalScrollingBehavior<NavigationTabBar> {
@@ -27,10 +23,10 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
 
     private ViewPropertyAnimatorCompat mTranslationAnimator;
     private ObjectAnimator mTranslationObjectAnimator;
-    private Snackbar.SnackbarLayout mSnackbarLayout;
+    private Snackbar.SnackbarLayout mSnackBarLayout;
     private FloatingActionButton mFloatingActionButton;
 
-    private int mSnackbarHeight = -1;
+    private int mSnackBarHeight = -1;
     private float
             mTargetOffset = 0,
             mFabTargetOffset = 0,
@@ -43,13 +39,6 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
     public NavigationTabBarBehavior(final boolean behaviorTranslationEnabled) {
         super();
         this.mBehaviorTranslationEnabled = behaviorTranslationEnabled;
-    }
-
-    public NavigationTabBarBehavior(final Context context, final AttributeSet attrs) {
-        super(context, attrs);
-        final TypedArray typedArray =
-                context.obtainStyledAttributes(attrs, R.styleable.NavigationTabBar);
-        typedArray.recycle();
     }
 
     @Override
@@ -70,21 +59,23 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, NavigationTabBar child, View dependency) {
-        updateSnackbar(child, dependency);
+        updateSnackBar(child, dependency);
         updateFloatingActionButton(dependency);
         return super.layoutDependsOn(parent, child, dependency);
     }
 
     @Override
-    public void onNestedVerticalOverScroll(CoordinatorLayout coordinatorLayout, NavigationTabBar child, @ScrollDirection int direction, int currentOverScroll, int totalOverScroll) {
+    public void onNestedVerticalOverScroll() {
+        // This method is intentionally empty, because of override
     }
 
     @Override
-    public void onDirectionNestedPreScroll(CoordinatorLayout coordinatorLayout, NavigationTabBar child, View target, int dx, int dy, int[] consumed, @ScrollDirection int scrollDirection) {
+    public void onDirectionNestedPreScroll() {
+// This method is intentionally empty, because of override
     }
 
     @Override
-    protected boolean onNestedDirectionFling(CoordinatorLayout coordinatorLayout, NavigationTabBar child, View target, float velocityX, float velocityY, @ScrollDirection int scrollDirection) {
+    protected boolean onNestedDirectionFling() {
         return false;
     }
 
@@ -132,15 +123,15 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
             mTranslationAnimator.setUpdateListener(new ViewPropertyAnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(View view) {
-                    // Animate snackbar
-                    if (mSnackbarLayout != null && mSnackbarLayout.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                    // Animate snack bar
+                    if (mSnackBarLayout != null && mSnackBarLayout.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                         mTargetOffset = child.getBarHeight() - view.getTranslationY();
 
                         final ViewGroup.MarginLayoutParams p =
-                                (ViewGroup.MarginLayoutParams) mSnackbarLayout.getLayoutParams();
+                                (ViewGroup.MarginLayoutParams) mSnackBarLayout.getLayoutParams();
 
                         p.setMargins(p.leftMargin, p.topMargin, p.rightMargin, (int) mTargetOffset);
-                        mSnackbarLayout.requestLayout();
+                        mSnackBarLayout.requestLayout();
                     }
                     // Animate Floating Action Button
                     if (mFloatingActionButton != null && mFloatingActionButton.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
@@ -183,13 +174,13 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
         mTranslationObjectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                if (mSnackbarLayout != null && mSnackbarLayout.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                if (mSnackBarLayout != null && mSnackBarLayout.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                     mTargetOffset = child.getBarHeight() - child.getTranslationY();
 
                     final ViewGroup.MarginLayoutParams p =
-                            (ViewGroup.MarginLayoutParams) mSnackbarLayout.getLayoutParams();
+                            (ViewGroup.MarginLayoutParams) mSnackBarLayout.getLayoutParams();
                     p.setMargins(p.leftMargin, p.topMargin, p.rightMargin, (int) mTargetOffset);
-                    mSnackbarLayout.requestLayout();
+                    mSnackBarLayout.requestLayout();
                 }
                 // Animate Floating Action Button
                 if (mFloatingActionButton != null && mFloatingActionButton.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
@@ -204,6 +195,7 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
         });
     }
 
+    @SuppressWarnings("unused")
     public static NavigationTabBarBehavior from(NavigationTabBar view) {
         final ViewGroup.LayoutParams params = view.getLayoutParams();
         if (!(params instanceof CoordinatorLayout.LayoutParams))
@@ -232,6 +224,7 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
     }
 
     // Reset NTB position with animation
+    @SuppressWarnings("SameParameterValue")
     public void resetOffset(NavigationTabBar view, boolean withAnimation) {
         if (mHidden) {
             mHidden = false;
@@ -239,12 +232,12 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
         }
     }
 
-    // Update Snackbar bottom margin
-    public void updateSnackbar(final NavigationTabBar child, View dependency) {
+    // Update snack bar bottom margin
+    private void updateSnackBar(final NavigationTabBar child, View dependency) {
         if (dependency != null && dependency instanceof Snackbar.SnackbarLayout) {
-            mSnackbarLayout = (Snackbar.SnackbarLayout) dependency;
+            mSnackBarLayout = (Snackbar.SnackbarLayout) dependency;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                mSnackbarLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                mSnackBarLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                     @Override
                     public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                                int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -261,7 +254,7 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
                 });
             }
 
-            if (mSnackbarHeight == -1) mSnackbarHeight = dependency.getHeight();
+            if (mSnackBarHeight == -1) mSnackBarHeight = dependency.getHeight();
             final int targetMargin = (int) (child.getBarHeight() - child.getTranslationY());
 
             child.bringToFront();
@@ -281,7 +274,7 @@ public class NavigationTabBarBehavior extends VerticalScrollingBehavior<Navigati
     }
 
     // Update floating action button bottom margin
-    public void updateFloatingActionButton(final View dependency) {
+    private void updateFloatingActionButton(final View dependency) {
         if (dependency != null && dependency instanceof FloatingActionButton) {
             mFloatingActionButton = (FloatingActionButton) dependency;
 
