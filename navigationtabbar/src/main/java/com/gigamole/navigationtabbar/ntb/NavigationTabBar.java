@@ -80,10 +80,13 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static int INVALID_INDEX = -1;
     public final static int AUTO_SIZE = -2;
     public final static int AUTO_COLOR = -3;
+    public final static int AUTO_SCALE = -4;
 
     private final static int DEFAULT_BADGE_ANIMATION_DURATION = 200;
     private final static int DEFAULT_BADGE_REFRESH_ANIMATION_DURATION = 100;
     private final static int DEFAULT_ANIMATION_DURATION = 300;
+    private final static float DEFAULT_ICON_SIZE_FRACTION = 0.5F;
+    private final static float DEFAULT_TITLE_ICON_SIZE_FRACTION = 0.5F;
 
     private final static int DEFAULT_INACTIVE_COLOR = Color.parseColor("#9f90af");
     private final static int DEFAULT_ACTIVE_COLOR = Color.WHITE;
@@ -97,10 +100,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     private final static int MAX_ALPHA = 255;
 
     private final static float ACTIVE_ICON_SCALE_BY = 0.3F;
-    private final static float ICON_SIZE_FRACTION = 0.45F;
-
     private final static float TITLE_ACTIVE_ICON_SCALE_BY = 0.2F;
-    private final static float TITLE_ICON_SIZE_FRACTION = 0.45F;
     private final static float TITLE_ACTIVE_SCALE_BY = 0.2F;
     private final static float TITLE_SIZE_FRACTION = 0.2F;
     private final static float TITLE_MARGIN_FRACTION = 0.15F;
@@ -221,6 +221,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     // Variables for sizes
     private float mModelSize;
     private float mIconSize;
+    private float mIconSizeFraction;
     // Corners radius for rect mode
     private float mCornersRadius;
 
@@ -371,6 +372,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             );
             setCornersRadius(
                     typedArray.getDimension(R.styleable.NavigationTabBar_ntb_corners_radius, 0.0F)
+            );
+            setIconSizeFraction(
+                    typedArray.getFloat(
+                            R.styleable.NavigationTabBar_ntb_icon_size_fraction,
+                            AUTO_SCALE
+                    )
             );
 
             // Init animator
@@ -672,6 +679,16 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         postInvalidate();
     }
 
+    public float getIconSizeFraction() {
+        return mIconSizeFraction;
+    }
+
+    // To reset scale fraction of icon to automatic just put in method AUTO_SCALE value
+    public void setIconSizeFraction(final float iconSizeFraction) {
+        mIconSizeFraction = iconSizeFraction;
+        requestLayout();
+    }
+
     public float getBadgeMargin() {
         return mBadgeMargin;
     }
@@ -943,7 +960,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             float side = mModelSize > height ? height : mModelSize;
             if (mIsBadged) side -= side * TITLE_SIZE_FRACTION;
 
-            mIconSize = side * (mIsTitled ? TITLE_ICON_SIZE_FRACTION : ICON_SIZE_FRACTION);
+            mIconSize = side * (mIconSizeFraction != AUTO_SCALE ? mIconSizeFraction :
+                    (mIsTitled ? DEFAULT_TITLE_ICON_SIZE_FRACTION : DEFAULT_ICON_SIZE_FRACTION));
             if (mModelTitleSize == AUTO_SIZE) mModelTitleSize = side * TITLE_SIZE_FRACTION;
             mTitleMargin = side * TITLE_MARGIN_FRACTION;
 
@@ -967,7 +985,8 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mIsBadged = false;
 
             mModelSize = (float) height / (float) mModels.size();
-            mIconSize = (int) ((mModelSize > width ? width : mModelSize) * ICON_SIZE_FRACTION);
+            mIconSize = (int) ((mModelSize > width ? width : mModelSize) *
+                    (mIconSizeFraction == AUTO_SCALE ? DEFAULT_ICON_SIZE_FRACTION : mIconSizeFraction));
         }
 
         // Set bounds for NTB
@@ -975,24 +994,6 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         final float barBadgeMargin = mBadgeGravity == BadgeGravity.TOP ? mBadgeMargin : 0.0F;
         mBgBounds.set(0.0F, barBadgeMargin, mBounds.width(), mBounds.height() + barBadgeMargin);
-
-        // Set main bitmap
-        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mCanvas.setBitmap(mBitmap);
-
-        // Set pointer canvas
-        mPointerBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mPointerCanvas.setBitmap(mPointerBitmap);
-
-        // Set icons canvas
-        mIconsBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mIconsCanvas.setBitmap(mIconsBitmap);
-
-        // Set titles canvas
-        if (mIsTitled) {
-            mTitlesBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            mTitlesCanvas.setBitmap(mTitlesBitmap);
-        } else mTitlesBitmap = null;
 
         // Set scale fraction for icons
         for (Model model : mModels) {
@@ -1002,6 +1003,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             model.mActiveIconScaleBy = model.mInactiveIconScale *
                     (mIsTitled ? TITLE_ACTIVE_ICON_SCALE_BY : ACTIVE_ICON_SCALE_BY);
         }
+
+        // Reset bitmap to init it onDraw()
+        mBitmap = null;
+        mPointerBitmap = null;
+        mIconsBitmap = null;
+        if (mIsTitled) mTitlesBitmap = null;
 
         // Set start position of pointer for preview or on start
         if (isInEditMode() || !mIsViewPagerMode) {
@@ -1040,9 +1047,39 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onDraw(final Canvas canvas) {
-        if (mCanvas == null || mPointerCanvas == null ||
-                mIconsCanvas == null || mTitlesCanvas == null)
-            return;
+        // Get height of NTB with badge on nor
+        final int mBadgedHeight = (int) (mBounds.height() + mBadgeMargin);
+
+        // Set main canvas
+        if (mBitmap == null || mBitmap.isRecycled()) {
+            mBitmap = Bitmap.createBitmap(
+                    (int) mBounds.width(), mBadgedHeight, Bitmap.Config.ARGB_8888
+            );
+            mCanvas.setBitmap(mBitmap);
+        }
+        // Set pointer canvas
+        if (mPointerBitmap == null || mPointerBitmap.isRecycled()) {
+            mPointerBitmap = Bitmap.createBitmap(
+                    (int) mBounds.width(), mBadgedHeight, Bitmap.Config.ARGB_8888
+            );
+            mPointerCanvas.setBitmap(mPointerBitmap);
+        }
+        // Set icons canvas
+        if (mIconsBitmap == null || mIconsBitmap.isRecycled()) {
+            mIconsBitmap = Bitmap.createBitmap(
+                    (int) mBounds.width(), mBadgedHeight, Bitmap.Config.ARGB_8888
+            );
+            mIconsCanvas.setBitmap(mIconsBitmap);
+        }
+        // Set titles canvas
+        if (mIsTitled) {
+            if (mTitlesBitmap == null || mTitlesBitmap.isRecycled()) {
+                mTitlesBitmap = Bitmap.createBitmap(
+                        (int) mBounds.width(), mBadgedHeight, Bitmap.Config.ARGB_8888
+                );
+                mTitlesCanvas.setBitmap(mTitlesBitmap);
+            }
+        } else mTitlesBitmap = null;
 
         // Reset and clear canvases
         mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
@@ -1188,14 +1225,17 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
             // Draw original model icon
             if (model.mSelectedIcon == null) {
-                mIconsCanvas.drawBitmap(model.mIcon, model.mIconMatrix, mIconPaint);
+                if (model.mIcon != null && !model.mIcon.isRecycled())
+                    mIconsCanvas.drawBitmap(model.mIcon, model.mIconMatrix, mIconPaint);
             } else {
-                if (mIconPaint.getAlpha() != MIN_ALPHA)
+                if (mIconPaint.getAlpha() != MIN_ALPHA
+                        && model.mIcon != null && !model.mIcon.isRecycled())
                     // Draw original icon when is visible
                     mIconsCanvas.drawBitmap(model.mIcon, model.mIconMatrix, mIconPaint);
             }
             // Draw selected icon when exist and visible
-            if (model.mSelectedIcon != null && mSelectedIconPaint.getAlpha() != MIN_ALPHA)
+            if (mSelectedIconPaint.getAlpha() != MIN_ALPHA
+                    && model.mSelectedIcon != null && !model.mSelectedIcon.isRecycled())
                 mIconsCanvas.drawBitmap(
                         model.mSelectedIcon, model.mIconMatrix, mSelectedIconPaint
                 );

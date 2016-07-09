@@ -132,6 +132,10 @@ For NTB you can set such parameters as:
     
      allows you to set corners radius of pointer.
 
+ - icon size fraction:
+    
+     allows you to set icon size fraction relative to smaller model side.
+
  - animation duration:
   
      allows you to set animation duration.
@@ -165,6 +169,8 @@ Orientation automatically detected according to view size.
 By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set AUTO_COLOR value to badge bg and title color.
 
 By default badge sizes and title sizes is auto fit. To reset calculation just set AUTO_SIZE value to badge size and title size.
+
+By default icon size fraction is 0.5 (half of smaller side of NTB model). To reset scale fraction of icon to automatic just put in method AUTO_SCALE value.
 
 If your set ViewPager and enable swipe you can action down on active pointer and do like drag.
 
@@ -232,6 +238,7 @@ navigationTabBar.setIsSwiped(true);
 navigationTabBar.setBgColor(Color.BLACK);
 navigationTabBar.setBadgeSize(10);
 navigationTabBar.setTitleSize(10);
+navigationTabBar.setIconSizeFraction(0.5);
 ```
 
 If your models is in badge mode you can set title, hide, show, toggle and update badge title like this:
@@ -280,6 +287,7 @@ And XML init:
    app:ntb_badge_use_typeface="true"
    app:ntb_swiped="true"
    app:ntb_bg_color="#000"
+   app:ntb_icon_size_fraction="0.5"
    app:ntb_badge_size="10sp"
    app:ntb_title_size="10sp"/>
 ```
