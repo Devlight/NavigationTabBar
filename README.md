@@ -1,4 +1,4 @@
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-blue.svg?style=flat-square)](http://android-arsenal.com/details/1/3382)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-yellow.svg?style=flat)](http://android-arsenal.com/details/1/3382)
 [![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabbar/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabbar/_latestVersion)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/06516143fa4448c5a5166ac8873d5527)](https://www.codacy.com/app/gigamole53/NavigationTabBar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DevLight-Mobile-Agency/NavigationTabBar&amp;utm_campaign=Badge_Grade)
 
