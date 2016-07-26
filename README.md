@@ -6,9 +6,9 @@ Navigation tab bar with colorful interactions.
 [![DevLight](https://lh4.googleusercontent.com/-9btnRFp_eVo/V5cfwZsBpMI/AAAAAAAAC4E/s4NGoezKhpAVdVofAoez1QWpzK5Na8_cQCL0B/w147-h20-no/devlight-badge.png)](http://devlight.com.ua)
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-yellow.svg?style=flat)](http://android-arsenal.com/details/1/3382)
-![Android](https://img.shields.io/badge/platform-android-brightgreen.svg?style=flat&label=Platform)
+[![Android](https://img.shields.io/badge/platform-android-brightgreen.svg?style=flat&label=Platform)](https://github.com/DevLight-Mobile-Agency)
 [![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabbar/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabbar/_latestVersion)
-[![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000&label=License)](https://github.com/DevLight-Mobile-Agency/NavigationTabStrip/blob/master/LICENSE.txt)
+[![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000&label=License)](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/blob/master/LICENSE.txt)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/06516143fa4448c5a5166ac8873d5527)](https://www.codacy.com/app/gigamole53/NavigationTabBar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DevLight-Mobile-Agency/NavigationTabBar&amp;utm_campaign=Badge_Grade)
 
 |   	|   	|   	|   	|   	|   	|
