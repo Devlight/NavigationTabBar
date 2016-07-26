@@ -56,18 +56,18 @@ Or Maven:
 Android SDK Version
 =========
 
-NavigationTabBar requires a minimum SDK version of 11. 
+`NavigationTabBar` requires a minimum SDK version of 11. 
 
 Sample
 ========
 
 <b>Parameters</b>
 
-For NTB you can set such parameters as:
+For `NTB` you can set such parameters as:
  
  - models:
     
-     allows you to set NTB models, where you set icon and color. Can be set up only via code.
+     allows you to set `NTB` models, where you set icon and color. Can be set up only via code.
     
  - behavior:
      
@@ -75,11 +75,11 @@ For NTB you can set such parameters as:
     
  - view pager:
      
-     allows you to connect NTB with ViewPager. If you want your can also set OnPageChangeListener.
+     allows you to connect `NTB` with `ViewPager`. If you want your can also set `OnPageChangeListener`.
          
  - background color:
  
-    allows you to set background to NTB which automatically set with offset relative to badge gravity and corners radius.
+    allows you to set background to `NTB` which automatically set with offset relative to badge gravity and corners radius.
 
  - model selected icon:
     
@@ -163,21 +163,21 @@ For NTB you can set such parameters as:
 
 <b>Tips</b>
 
-Creation of models occurs through Builder pattern.
+Creation of models occurs through `Builder` pattern.
 
-ModelBuilder requires two fields: icon and color. Title, badge title and selected icon is optional.
+`ModelBuilder` requires two fields: icon and color. Title, badge title and selected icon is optional.
 
 You can set selected icon. Resize and scale of selected icon equals to original icon.
 
-Orientation automatically detected according to view size.
+Orientation automatically detected according to `View` size.
 
-By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set AUTO_COLOR value to badge bg and title color.
+By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set `AUTO_COLOR` value to badge bg and title color.
 
-By default badge sizes and title sizes is auto fit. To reset calculation just set AUTO_SIZE value to badge size and title size.
+By default badge sizes and title sizes is auto fit. To reset calculation just set `AUTO_SIZE` value to badge size and title size.
 
-By default icon size fraction is 0.5 (half of smaller side of NTB model). To reset scale fraction of icon to automatic just put in method AUTO_SCALE value.
+By default icon size fraction is `0.5F` (half of smaller side of `NTB` model). To reset scale fraction of icon to automatic just put in method `AUTO_SCALE` value.
 
-If your set ViewPager and enable swipe you can action down on active pointer and do like drag.
+If your set `ViewPager` and enable swipe you can action down on active pointer and do like drag.
 
 <b>Init</b>
 
@@ -255,7 +255,7 @@ model.toggleBadge();
 model.updateBadgeTitle("Here some title like NEW or some integer value");
 ```
           
-To enable behavior translation inside CoordinatorLayout when at bottom of screen:
+To enable behavior translation inside `CoordinatorLayout` when at bottom of screen:
 ```java
 navigationTabBar.setBehaviorEnabled(true);
 ```
