@@ -848,11 +848,18 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         // You can use force param or call this method in some post()
         if (force) {
             updateIndicatorPosition(MAX_FRACTION);
+
+            if (mOnTabBarSelectedIndexListener != null)
+                mOnTabBarSelectedIndexListener.onStartTabSelected(mModels.get(mIndex), mIndex);
+
             // Force onPageScrolled listener and refresh VP
             if (mIsViewPagerMode) {
                 if (!mViewPager.isFakeDragging()) mViewPager.beginFakeDrag();
                 if (mViewPager.isFakeDragging()) mViewPager.fakeDragBy(0.0F);
                 if (mViewPager.isFakeDragging()) mViewPager.endFakeDrag();
+            } else {
+                if (mOnTabBarSelectedIndexListener != null)
+                    mOnTabBarSelectedIndexListener.onEndTabSelected(mModels.get(mIndex), mIndex);
             }
         } else mAnimator.start();
     }

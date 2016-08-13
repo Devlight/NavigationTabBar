@@ -39,7 +39,7 @@ dependencies {
 Or Gradle Maven Central:
 
 ```groovy
-compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.3'
+compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.5'
 ```
 
 Or Maven:
@@ -48,7 +48,7 @@ Or Maven:
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
     <artifactId>navigationtabbar</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.5</version>
     <type>aar</type>
 </dependency>
 ```

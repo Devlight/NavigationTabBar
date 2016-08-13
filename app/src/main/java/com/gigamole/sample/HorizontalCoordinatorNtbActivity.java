@@ -117,7 +117,6 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
             @Override
             public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
-
             }
 
             @Override
