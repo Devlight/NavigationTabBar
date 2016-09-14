@@ -21,8 +21,6 @@ Navigation tab bar with colorful interactions.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![Codacy](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScSHhmckZyeGJDcXc)](https://www.codacy.com/app/gigamole53/NavigationTabBar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DevLight-Mobile-Agency/NavigationTabBar&amp;utm_campaign=Badge_Grade)
 
-<br/>
-
 <table align="center">
     <tr>
         <td><img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScTEVDQXJLOGZLZFU"/></td>
