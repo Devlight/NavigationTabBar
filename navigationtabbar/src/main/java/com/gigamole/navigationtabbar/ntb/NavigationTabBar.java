@@ -1478,15 +1478,16 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         if (mIsScaled)
             model.mIconMatrix.postScale(
-                    model.mInactiveIconScale, model.mInactiveIconScale, matrixCenterX, matrixCenterY
-            );
-        else
-            model.mIconMatrix.postScale(
                     model.mInactiveIconScale + matrixScale, model.mInactiveIconScale + matrixScale,
                     matrixCenterX, matrixCenterY
             );
+        else
+            model.mIconMatrix.postScale(
+                    model.mInactiveIconScale, model.mInactiveIconScale, matrixCenterX, matrixCenterY
+            );
 
-        mModelTitlePaint.setTextSize(mModelTitleSize * (mIsScaled ? 1.0F : textScale));
+
+        mModelTitlePaint.setTextSize(mModelTitleSize * (mIsScaled ? textScale : 1.0F));
         if (mTitleMode == TitleMode.ACTIVE) mModelTitlePaint.setAlpha(MIN_ALPHA);
 
         // Reset icons alpha

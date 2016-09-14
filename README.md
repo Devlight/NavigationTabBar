@@ -1,19 +1,36 @@
+<br/>
+<p align="center">
+  <a href="http://devlight.io">
+      <img src ="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScLVBKck51Z1Rzb0E" alt="Devlight"/>
+  </a>
+</p>
+<br/>
+
 NavigationTabBar
 ================
 
 Navigation tab bar with colorful interactions.
 
-[![DevLight](https://lh4.googleusercontent.com/-9btnRFp_eVo/V5cfwZsBpMI/AAAAAAAAC4E/s4NGoezKhpAVdVofAoez1QWpzK5Na8_cQCL0B/w147-h20-no/devlight-badge.png)](http://devlight.com.ua)
+[![Android Arsenal](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScbFFTYko2dlc2d28)](http://android-arsenal.com/details/1/3382)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[![Android](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wSccEZaclNGN0R5OWc)](https://github.com/DevLight-Mobile-Agency)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[![Download](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScZE8wb0xKbC1RT0U)](https://bintray.com/gigamole/maven/navigationtabbar/_latestVersion)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[![License](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScU0tmeFpGMHVWNWs)](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/blob/master/LICENSE.txt)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[![Codacy](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScSHhmckZyeGJDcXc)](https://www.codacy.com/app/gigamole53/NavigationTabBar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DevLight-Mobile-Agency/NavigationTabBar&amp;utm_campaign=Badge_Grade)
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-NavigationTabBar-yellow.svg?style=flat)](http://android-arsenal.com/details/1/3382)
-[![Android](https://img.shields.io/badge/platform-android-brightgreen.svg?style=flat&label=Platform)](https://github.com/DevLight-Mobile-Agency)
-[![Download](https://api.bintray.com/packages/gigamole/maven/navigationtabbar/images/download.svg) ](https://bintray.com/gigamole/maven/navigationtabbar/_latestVersion)
-[![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000&label=License)](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/blob/master/LICENSE.txt)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/06516143fa4448c5a5166ac8873d5527)](https://www.codacy.com/app/gigamole53/NavigationTabBar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DevLight-Mobile-Agency/NavigationTabBar&amp;utm_campaign=Badge_Grade)
+<br/>
 
 |   	|   	|   	|   	|   	|   	|
 |:-:	|:-:	|:-:	|:-:	|:-:	|:-:	|
-![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|![](https://lh4.googleusercontent.com/-mF70XCnMpgk/V1NnK34tnhI/AAAAAAAACkY/z0Z15Q_7gg4fMovWiEvo9agJgz7m933cQCL0B/w323-h552-no/btbntb.gif)|![](https://lh5.googleusercontent.com/-LcHHajuKNzw/Vz77El2lHsI/AAAAAAAACiQ/I0CjrMUP6R4ioH9h8nEe37LCqXmb3GJKACL0B/w317-h552-no/ntbsi.gif)|![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
+![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|
+![](https://lh4.googleusercontent.com/-mF70XCnMpgk/V1NnK34tnhI/AAAAAAAACkY/z0Z15Q_7gg4fMovWiEvo9agJgz7m933cQCL0B/w323-h552-no/btbntb.gif)|
+![](https://lh5.googleusercontent.com/-LcHHajuKNzw/Vz77El2lHsI/AAAAAAAACiQ/I0CjrMUP6R4ioH9h8nEe37LCqXmb3GJKACL0B/w317-h552-no/ntbsi.gif)|
+![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|
+![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|
+![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
 
 U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
@@ -302,11 +319,6 @@ Getting Help
 
 To report a specific problem or feature request, [open a new issue on Github](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/issues/new).
 
-License
-======
-
-Apache 2.0 and MIT. See [LICENSE](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/blob/master/LICENSE.txt) file for details.
-
 Inspiration
 ===========
 
@@ -319,19 +331,4 @@ Thanks to [Valery Nuzhniy](https://www.pinterest.com/hevbolt/) for NTB badge des
 Author
 =======
 
-Made in [DevLight Mobile Agency](https://github.com/DevLight-Mobile-Agency)
-
 Created by [Basil Miller](https://github.com/GIGAMOLE) - [@gigamole](mailto:gigamole53@gmail.com)
-
-Support
-=======
-
-If you'd like to support future development and new product features, please make a payments on Gratipay and Beerpay or become a patron on Patreon.
-
-[![Gratipay](https://img.shields.io/gratipay/user/gigamole.svg?maxAge=2592000)](https://gratipay.com/~GIGAMOLE/)
-[![Beerpay](https://beerpay.io/DevLight-Mobile-Agency/NavigationTabBar/badge.svg?style=flat)](https://beerpay.io/DevLight-Mobile-Agency/NavigationTabBar)
-[![Patreon](https://lh5.googleusercontent.com/-lXI_oKp5724/V58ysdDtxHI/AAAAAAAAC7s/g91W_YT2SM0Q_VaIhDAMmoe-jHPP3ijJwCL0B/w140-h20-no/patreon-badge.png)](https://www.patreon.com/gigamole)
-
-Also, if you use this library in applications that are available on Google Play, please report it to us or author.
-
-Thanks in advance.
