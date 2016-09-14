@@ -23,14 +23,21 @@ Navigation tab bar with colorful interactions.
 
 <br/>
 
-|   	|   	|   	|   	|   	|   	|
-|:-:	|:-:	|:-:	|:-:	|:-:	|:-:	|
-![](https://lh6.googleusercontent.com/-Bf7uxUiRvfk/VvpVlkZzsVI/AAAAAAAACPA/Ysg9uuBpaL8UhsXpYPlyNJK6IJssdkMvg/w325-h552-no/hntb.gif)|
-![](https://lh4.googleusercontent.com/-mF70XCnMpgk/V1NnK34tnhI/AAAAAAAACkY/z0Z15Q_7gg4fMovWiEvo9agJgz7m933cQCL0B/w323-h552-no/btbntb.gif)|
-![](https://lh5.googleusercontent.com/-LcHHajuKNzw/Vz77El2lHsI/AAAAAAAACiQ/I0CjrMUP6R4ioH9h8nEe37LCqXmb3GJKACL0B/w317-h552-no/ntbsi.gif)|
-![](https://lh6.googleusercontent.com/-hMvLn-jzY3k/VzcPrGAmr4I/AAAAAAAACc0/US0yokfG23kQJEAPxFoPp-8lOUNRSPV9QCL0B/w321-h552-no/cltntb.gif)|
-![](https://lh4.googleusercontent.com/-k4Ac7-c2m8E/VvpVlk3ZmLI/AAAAAAAACPA/21ISoAYGZzUlvGPmIauXwfYZOKdCYIRGg/w323-h552-no/vntb.gif)|
-![](https://lh5.googleusercontent.com/-hmELfZQvexU/VvpVlooaPvI/AAAAAAAACPA/5HA5ic7dASwBUYqpqcfxAmfLzPPDXejqQ/w322-h552-no/ntbs.gif)
+<p align="center">
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScTEVDQXJLOGZLZFU"/>
+    &nbsp;
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScTmhyQl9RYVIyUFE"/>
+    &nbsp;
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScTmhyQl9RYVIyUFE"/>
+    &nbsp;
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScTDVwbm1qclB1MmM"/>
+    &nbsp;
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScVWp3eGV4dEJTN2M"/>
+    &nbsp;
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScdmloRFNKV3hfS0U"/>
+    &nbsp;
+    <img src="https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScclZSSlU2ZE1qVVU"/>
+</p>
 
 U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
@@ -40,7 +47,6 @@ Download
 You can download a .aar` from GitHub's [releases page](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/releases).
 
 Or use Gradle jCenter:
-
 ```groovy
 dependencies {
     repositories {
@@ -54,13 +60,11 @@ dependencies {
 ```
 
 Or Gradle Maven Central:
-
 ```groovy
 compile 'com.github.devlight.navigationtabbar:navigationtabbar:1.2.5'
 ```
 
 Or Maven:
-
 ```groovy
 <dependency>
     <groupId>com.github.devlight.navigationtabbar</groupId>
@@ -82,116 +86,88 @@ Sample
 
 For `NTB` you can set such parameters as:
  
- - models:
-    
+ - models:  
      allows you to set `NTB` models, where you set icon and color. Can be set up only via code.
     
- - behavior:
-     
+ - behavior:  
      allows you to set bottom translation behavior.
     
- - view pager:
-     
+ - view pager:  
      allows you to connect `NTB` with `ViewPager`. If you want your can also set `OnPageChangeListener`.
          
- - background color:
- 
+ - background color:  
     allows you to set background to `NTB` which automatically set with offset relative to badge gravity and corners radius.
 
- - model selected icon:
-    
+ - model selected icon:  
      allows you to set selected icon when current model is active.
 
- - model title:
-    
+ - model title:  
      allows you to enable title in you model.
     
- - model badge:
-     
+ - model badge:  
      allows you to enable badge in you model.
      
- - use custom typeface on badge:
-     
+ - use custom typeface on badge:  
      allows you to handle set of custom typeface in your badge.
     
- - title mode:
-   
+ - title mode:  
      allows you to handle mode of the model title show. Can show all or only active.
      
- - title size:
-    
+ - title size:  
      allows you to set titles size. 
      
- - scale mode:
-    
+ - scale mode:  
      allows you to handle mode of the model icon and title scale.
      
- - tint mode:
-     
+ - tint mode:  
      allows you to enable or disable icon tinting.
       
- - badge size:
-     
+ - badge size:  
      allows you to set badges size.
      
- - badge position:
- 
+ - badge position:  
      allows you to set the badge position in you model. Can be: left(25%), center(50%) and right(75%).
 
- - badge gravity:
-  
+ - badge gravity:  
      allows you to set the badge gravity in NTB. Can be top or bottom.
      
- - badge colors:
-   
-      allows you to set the badge bg and title colors.
+ - badge colors:  
+     allows you to set the badge bg and title colors.
     
- - typeface:
- 
+ - typeface:  
      allows you to set custom typeface to your title.
  
- - corners radius:
-    
+ - corners radius:  
      allows you to set corners radius of pointer.
 
- - icon size fraction:
-    
+ - icon size fraction:   
      allows you to set icon size fraction relative to smaller model side.
 
- - animation duration:
-  
+ - animation duration:  
      allows you to set animation duration.
       
- - inactive color:
-
+ - inactive color:  
      allows you to set inactive icon color.
      
- - active color:
-  
+ - active color:  
      allows you to set active icon color.
      
- - tab bar listener:
-  
+ - tab bar listener:  
      allows you to set listener which triggering on start or on end when you set model index.
         
- - preview colors:
-  
+ - preview colors:  
      allows you to set preview colors, which generate count of models equals to count of colors.
 
 <b>Tips</b>
 
-Creation of models occurs through `Builder` pattern.
-
+Creation of models occurs through `Builder` pattern.  
 `ModelBuilder` requires two fields: icon and color. Title, badge title and selected icon is optional.
 
-You can set selected icon. Resize and scale of selected icon equals to original icon.
-
+You can set selected icon. Resize and scale of selected icon equals to original icon.  
 Orientation automatically detected according to `View` size.
 
-By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set `AUTO_COLOR` value to badge bg and title color.
-
-By default badge sizes and title sizes is auto fit. To reset calculation just set `AUTO_SIZE` value to badge size and title size.
-
+By default badge bg color is the active model color and badge title color is the model bg color. To reset colors just set `AUTO_COLOR` value to badge bg and title color.  
+By default badge sizes and title sizes is auto fit. To reset calculation just set `AUTO_SIZE` value to badge size and title size.  
 By default icon size fraction is `0.5F` (half of smaller side of `NTB` model). To reset scale fraction of icon to automatic just put in method `AUTO_SCALE` value.
 
 If your set `ViewPager` and enable swipe you can action down on active pointer and do like drag.
@@ -332,3 +308,22 @@ Author
 =======
 
 Created by [Basil Miller](https://github.com/GIGAMOLE) - [@gigamole](mailto:gigamole53@gmail.com)
+
+Company
+=======
+
+[Here](https://github.com/DevLight-Mobile-Agency) you can see open source work developed by Devlight LLC.  
+This and another works is an exclusive property of Devlight LLC. 
+
+If you want to use this library in applications which will be available on Google Play, please report about it to us or to the author of the library.
+
+Also you can find us on: [Facebook](https://www.facebook.com/devlightagency), [Twitter](https://twitter.com/DevLightIO), [LinkedIn](https://www.linkedin.com/company/devlight).
+
+Whether you're searching for a new partner or trusted team for creating your new great product we are always ready to start work with you. 
+
+You can contact us via info@devlight.io or opensource@devlight.io.
+
+Thanks in advance.
+
+Devlight LLC, 2016  
+[devlight.io](http://devlight.io) 
