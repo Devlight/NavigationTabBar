@@ -36,7 +36,7 @@ Navigation tab bar with colorful interactions.
 U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
 Download
-------------
+========
 
 You can download a .aar` from GitHub's [releases page](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/releases).
 
@@ -69,12 +69,12 @@ Or Maven:
 ```
 
 Android SDK Version
-=========
+===================
 
 `NavigationTabBar` requires a minimum SDK version of 11. 
 
 Sample
-========
+======
 
 <b>Parameters</b>
 
@@ -285,12 +285,18 @@ And XML init:
 ```
 
 Getting Help
-======
+============
 
 To report a specific problem or feature request, [open a new issue on Github](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/issues/new).
 
-Inspiration
-===========
+Xamarin
+=======
+
+Thanks to [Martijn van Dijk](https://github.com/martijn00) for developing Xamarin bindings library for [NavigationTabBar](https://github.com/martijn00/NavigationTabBarXamarin).  
+Plugin is available on [Nuget](https://www.nuget.org/packages/Xam.Plugins.Android.InfiniteCycleViewPager/).
+
+Credits
+=======
 
 |[Sergey Valiukh](https://dribbble.com/SergeyValiukh)|
 |:--------------------------------------------------:|
@@ -299,7 +305,7 @@ Inspiration
 Thanks to [Valery Nuzhniy](https://www.pinterest.com/hevbolt/) for NTB badge design.
 
 Author
-=======
+======
 
 Created by [Basil Miller](https://github.com/GIGAMOLE) - [@gigamole](mailto:gigamole53@gmail.com)
 
@@ -311,11 +317,11 @@ This and another works is an exclusive property of Devlight LLC.
 
 If you want to use this library in applications which will be available on Google Play, please report about it to us or to the author of the library.
 
-Also you can find us on: [Facebook](https://www.facebook.com/devlightagency), [Twitter](https://twitter.com/DevLightIO), [LinkedIn](https://www.linkedin.com/company/devlight).
-
 Whether you're searching for a new partner or trusted team for creating your new great product we are always ready to start work with you. 
 
 You can contact us via info@devlight.io or opensource@devlight.io.
+
+[![Facebook](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScaGhGVFNKU0VxMnc)](https://www.facebook.com/devlightagency)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Twitter](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScZ1ExQWh5cHF5cVE)](https://twitter.com/DevLightIO)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![LinkedIn](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wSccGZINzEycE1nVFE)](https://www.linkedin.com/company/devlight)
 
 Thanks in advance.
 
