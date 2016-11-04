@@ -299,14 +299,14 @@ XML属性中文详解:
         app:ntb_icon_size_fraction="1"      图标所占的大小比例            最佳值:0.5
         标题相关:
         app:ntb_titled="true"               是否显示图标所对应的标题       默认为false
-        app:ntb_title_mode="active"         图片所对应的标题显示模式       active:活动时才显示 all:总是显示  ps:app:ntb_titled属性值为 true 时才可用
+        app:ntb_title_mode="active"         图片所对应的标题显示模式       active:活动时才显示 all:总是显示  PS:app:ntb_titled属性值为 true 时才可用
         app:ntb_title_size="10sp"           设置图标所对应的标题文字大小    请自定义
         勋章相关:
         app:ntb_badged="false"              是否显示勋章                  默认为false
         app:ntb_badge_gravity="top"         勋章的上下位置                top|bottom
         app:ntb_badge_position="right"      勋章的左右位置                left(25%), center(50%) and right(75%)
         app:ntb_badge_bg_color="#ffff0000"  勋章的背景颜色                可自定义
-        app:ntb_badge_title_color="#000000" 勋章的标题文字颜色             可自定义
+        app:ntb_badge_title_color="#000000" 勋章的标题文字颜色             可自定义 PS:不设置的话默认为切换动画的背景色
         app:ntb_badge_size="12sp"           勋章的标题文字大小             可自定义
         字体相关:
         app:ntb_badge_use_typeface="false"  是否使用自定义字体             默认为false
