@@ -1133,13 +1133,12 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         }
 
         // Set bound of pointer
-        if (mIsHorizontalOrientation)
-            mPointerBounds.set(
-                    mPointerLeftTop,
-                    barBadgeMargin,
-                    mPointerRightBottom,
-                    mBounds.height() + barBadgeMargin
-            );
+        if (mIsHorizontalOrientation) mPointerBounds.set(
+                mPointerLeftTop,
+                barBadgeMargin,
+                mPointerRightBottom,
+                mBounds.height() + barBadgeMargin
+        );
         else mPointerBounds.set(0.0F, mPointerLeftTop, mBounds.width(), mPointerRightBottom);
 
         // Draw pointer for model colors
@@ -1695,24 +1694,24 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     // Model class
     public static class Model {
 
-        int mColor;
+        private int mColor;
 
-        final Bitmap mIcon;
-        final Bitmap mSelectedIcon;
-        final Matrix mIconMatrix = new Matrix();
+        private final Bitmap mIcon;
+        private final Bitmap mSelectedIcon;
+        private final Matrix mIconMatrix = new Matrix();
 
-        String mTitle = "";
-        String mBadgeTitle = "";
-        String mTempBadgeTitle = "";
-        float mBadgeFraction;
+        private String mTitle = "";
+        private String mBadgeTitle = "";
+        private String mTempBadgeTitle = "";
+        private float mBadgeFraction;
 
-        boolean mIsBadgeShowed;
-        boolean mIsBadgeUpdated;
+        private boolean mIsBadgeShowed;
+        private boolean mIsBadgeUpdated;
 
-        final ValueAnimator mBadgeAnimator = new ValueAnimator();
+        private final ValueAnimator mBadgeAnimator = new ValueAnimator();
 
-        float mInactiveIconScale;
-        float mActiveIconScaleBy;
+        private float mInactiveIconScale;
+        private float mActiveIconScaleBy;
 
         Model(final Builder builder) {
             mColor = builder.mColor;
@@ -1826,13 +1825,13 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
 
         public static class Builder {
 
-            final int mColor;
+            private final int mColor;
 
-            final Bitmap mIcon;
-            Bitmap mSelectedIcon;
+            private final Bitmap mIcon;
+            private Bitmap mSelectedIcon;
 
-            String mTitle;
-            String mBadgeTitle;
+            private String mTitle;
+            private String mBadgeTitle;
 
             public Builder(final Drawable icon, final int color) {
                 mColor = color;
@@ -1912,9 +1911,9 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
     protected class ResizeInterpolator implements Interpolator {
 
         // Spring factor
-        final static float FACTOR = 1.0F;
+        private final static float FACTOR = 1.0F;
         // Check whether side we move
-        boolean mResizeIn;
+        private boolean mResizeIn;
 
         @Override
         public float getInterpolation(final float input) {
@@ -1944,7 +1943,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
         public final static int CENTER_INDEX = 1;
         public final static int RIGHT_INDEX = 2;
 
-        protected final float mPositionFraction;
+        private final float mPositionFraction;
 
         BadgePosition(final float positionFraction) {
             mPositionFraction = positionFraction;
