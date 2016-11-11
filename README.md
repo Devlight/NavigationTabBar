@@ -33,12 +33,12 @@ Navigation tab bar with colorful interactions.
     </tr>
 </table>
 
-U can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
+You can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
 Download
 ========
 
-You can download a .aar` from GitHub's [releases page](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/releases).
+You can download a `.aar` from GitHub's [releases page](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/releases).
 
 Or use Gradle jCenter:
 ```groovy

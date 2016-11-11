@@ -1,4 +1,4 @@
-package com.gigamole.sample;
+package devlight.io.navigationtabbar;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

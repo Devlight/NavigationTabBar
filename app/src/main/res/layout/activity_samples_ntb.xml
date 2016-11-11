@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:padding="10dp">
 
-            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+            <devlight.io.library.ntb.NavigationTabBar
                 android:id="@+id/ntb_sample_1"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:padding="10dp">
 
-            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+            <devlight.io.library.ntb.NavigationTabBar
                 android:id="@+id/ntb_sample_2"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
@@ -57,7 +57,7 @@
             android:layout_weight="1"
             android:padding="10dp">
 
-            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+            <devlight.io.library.ntb.NavigationTabBar
                 android:id="@+id/ntb_sample_3"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
@@ -84,7 +84,7 @@
             android:layout_weight="1"
             android:padding="10dp">
 
-            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+            <devlight.io.library.ntb.NavigationTabBar
                 android:id="@+id/ntb_sample_4"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -102,7 +102,7 @@
             android:layout_weight="1"
             android:padding="10dp">
 
-            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+            <devlight.io.library.ntb.NavigationTabBar
                 android:id="@+id/ntb_sample_5"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
@@ -123,7 +123,7 @@
             android:layout_weight="1"
             android:padding="10dp">
 
-            <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+            <devlight.io.library.ntb.NavigationTabBar
                 android:id="@+id/ntb_sample_6"
                 android:layout_width="240dp"
                 android:layout_height="60dp"

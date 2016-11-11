@@ -1,4 +1,4 @@
-package com.gigamole.navigationtabbar.behavior;
+package devlight.io.library.behavior;
 
 
 import android.annotation.TargetApi;
@@ -25,7 +25,7 @@ abstract class VerticalScrollingBehavior<V extends View> extends CoordinatorLayo
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ScrollDirection.SCROLL_DIRECTION_UP, ScrollDirection.SCROLL_DIRECTION_DOWN})
-    public @interface ScrollDirection {
+    @interface ScrollDirection {
         int SCROLL_DIRECTION_UP = 1;
         int SCROLL_DIRECTION_DOWN = -1;
         int SCROLL_NONE = 0;

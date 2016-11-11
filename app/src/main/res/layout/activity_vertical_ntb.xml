@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:background="#423752">
 
-    <com.gigamole.navigationtabbar.ntb.NavigationTabBar
+    <devlight.io.library.ntb.NavigationTabBar
         android:id="@+id/ntb_vertical"
         android:layout_width="50dp"
         android:layout_height="match_parent"

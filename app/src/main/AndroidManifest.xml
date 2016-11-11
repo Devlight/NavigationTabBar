@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="com.gigamole.sample"
+    package="devlight.io.sample"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.gigamole.sample.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -18,16 +18,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.gigamole.sample.HorizontalNtbActivity"
+        <activity android:name=".HorizontalNtbActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"/>
 
-        <activity android:name="com.gigamole.sample.TopHorizontalNtbActivity"/>
+        <activity android:name=".TopHorizontalNtbActivity"/>
 
-        <activity android:name="com.gigamole.sample.HorizontalCoordinatorNtbActivity"/>
+        <activity android:name=".HorizontalCoordinatorNtbActivity"/>
 
-        <activity android:name="com.gigamole.sample.VerticalNtbActivity"/>
+        <activity android:name=".VerticalNtbActivity"/>
 
-        <activity android:name="com.gigamole.sample.SamplesNtbActivity"/>
+        <activity android:name=".SamplesNtbActivity"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.gigamole.sample;
+package devlight.io.sample;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.graphics.ColorUtils;
 import android.widget.Toast;
 
-import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+import devlight.io.library.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 

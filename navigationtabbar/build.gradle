@@ -47,7 +47,7 @@ dependencies {
 
 def siteUrl = 'https://github.com/DevLight-Mobile-Agency/NavigationTabBar'
 def gitUrl = 'https://github.com/DevLight-Mobile-Agency/NavigationTabBar.git'
-group = "com.github.devlight.navigationtabbar"
+group = "devlight.io"
 
 install {
     repositories.mavenInstaller {
@@ -122,7 +122,7 @@ bintray {
     pkg {
         repo = "maven"
         // it is the name that appears in bintray when logged
-        name = "navigationtabbar"
+        name = "ntb"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

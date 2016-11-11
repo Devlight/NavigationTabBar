@@ -1,11 +1,8 @@
-package com.gigamole.sample;
+package devlight.io.sample;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+import devlight.io.library.ntb.NavigationTabBar;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,12 +20,12 @@ import java.util.Random;
 /**
  * Created by GIGAMOLE on 28.03.2016.
  */
-public class HorizontalCoordinatorNtbActivity extends Activity {
+public class TopHorizontalNtbActivity extends Activity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_horizontal_coordinator_ntb);
+        setContentView(R.layout.activity_horizontal_top_ntb);
         initUI();
     }
 
@@ -107,16 +104,23 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
                         .title("Medal")
                         .build()
         );
-
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(viewPager, 2);
 
-        //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
-        navigationTabBar.setBehaviorEnabled(true);
+        navigationTabBar.post(new Runnable() {
+            @Override
+            public void run() {
+                final View viewPager = findViewById(R.id.vp_horizontal_ntb);
+                ((ViewGroup.MarginLayoutParams) viewPager.getLayoutParams()).topMargin =
+                        (int) -navigationTabBar.getBadgeMargin();
+                viewPager.requestLayout();
+            }
+        });
 
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
             @Override
             public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
+
             }
 
             @Override
@@ -124,25 +128,8 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
                 model.hideBadge();
             }
         });
-        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(final int state) {
-
-            }
-        });
-
-        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.parent);
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.mask).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 for (int i = 0; i < navigationTabBar.getModels().size(); i++) {
@@ -158,24 +145,8 @@ public class HorizontalCoordinatorNtbActivity extends Activity {
                         }
                     }, i * 100);
                 }
-
-                coordinatorLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Snackbar snackbar = Snackbar.make(navigationTabBar, "Coordinator NTB", Snackbar.LENGTH_SHORT);
-                        snackbar.getView().setBackgroundColor(Color.parseColor("#9b92b3"));
-                        ((TextView) snackbar.getView().findViewById(R.id.snackbar_text))
-                                .setTextColor(Color.parseColor("#423752"));
-                        snackbar.show();
-                    }
-                }, 1000);
             }
         });
-
-        final CollapsingToolbarLayout collapsingToolbarLayout =
-                (CollapsingToolbarLayout) findViewById(R.id.toolbar);
-        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#009F90AF"));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#9f90af"));
     }
 
     public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHolder> {

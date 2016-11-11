@@ -1,4 +1,4 @@
-package com.gigamole.sample;
+package devlight.io.sample;
 
 import android.app.Activity;
 import android.content.Intent;

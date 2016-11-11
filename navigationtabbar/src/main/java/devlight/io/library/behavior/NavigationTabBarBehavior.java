@@ -1,4 +1,4 @@
-package com.gigamole.navigationtabbar.behavior;
+package devlight.io.library.behavior;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
-import com.gigamole.navigationtabbar.ntb.NavigationTabBar;
+import devlight.io.library.ntb.NavigationTabBar;
 
 public class NavigationTabBarBehavior extends VerticalScrollingBehavior<NavigationTabBar> {
 
