@@ -1921,7 +1921,7 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             else return (float) (Math.pow(input, 2.0F * FACTOR));
         }
 
-        float getResizeInterpolation(final float input, final boolean resizeIn) {
+        private float getResizeInterpolation(final float input, final boolean resizeIn) {
             mResizeIn = resizeIn;
             return getInterpolation(input);
         }
