@@ -65,6 +65,7 @@ public class VerticalNtbActivity extends Activity {
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_first),
                         Color.parseColor(colors[0]))
+                        .title("ic_first")
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
                         .build()
         );
@@ -73,6 +74,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_second),
                         Color.parseColor(colors[1]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_second")
                         .build()
         );
         models.add(
@@ -80,6 +82,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_third),
                         Color.parseColor(colors[2]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_third")
                         .build()
         );
         models.add(
@@ -87,6 +90,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_fourth),
                         Color.parseColor(colors[3]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_fourth")
                         .build()
         );
         models.add(
@@ -94,6 +98,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_fifth),
                         Color.parseColor(colors[4]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_fifth")
                         .build()
         );
         models.add(
@@ -101,6 +106,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_sixth),
                         Color.parseColor(colors[5]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_sixth")
                         .build()
         );
         models.add(
@@ -108,6 +114,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_seventh),
                         Color.parseColor(colors[6]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_seventh")
                         .build()
         );
         models.add(
@@ -115,6 +122,7 @@ public class VerticalNtbActivity extends Activity {
                         getResources().getDrawable(R.drawable.ic_eighth),
                         Color.parseColor(colors[7]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_eighth))
+                        .title("ic_eighth")
                         .build()
         );
 

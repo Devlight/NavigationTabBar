@@ -1002,13 +1002,19 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             mBehaviorEnabled = false;
             // Disable other features
             mIsHorizontalOrientation = false;
-            mIsTitled = false;
+//            mIsTitled = false;
             mIsBadged = false;
 
             mModelSize = (float) height / (float) mModels.size();
-            mIconSize = (int) ((mModelSize > width ? width : mModelSize) *
+            // Get smaller side
+            float side = mModelSize > width ? width : mModelSize;
+
+            mIconSize = (int) (side *
                     (mIconSizeFraction == AUTO_SCALE ?
                             DEFAULT_ICON_SIZE_FRACTION : mIconSizeFraction));
+
+            if (mModelTitleSize == AUTO_SIZE) mModelTitleSize = side * TITLE_SIZE_FRACTION;
+            mTitleMargin = side * TITLE_MARGIN_FRACTION;
         }
 
         // Set bounds for NTB
@@ -1162,16 +1168,24 @@ public class NavigationTabBar extends View implements ViewPager.OnPageChangeList
             final float matrixCenterY;
 
             // Set offset to titles
-            final float leftTitleOffset = (mModelSize * i) + (mModelSize * 0.5F);
-            final float topTitleOffset =
-                    mBounds.height() - (mBounds.height() - iconMarginTitleHeight) * 0.5F;
-
+            final float leftTitleOffset;
+            final float topTitleOffset;
             if (mIsHorizontalOrientation) {
                 leftOffset = (mModelSize * i) + (mModelSize - model.mIcon.getWidth()) * 0.5F;
                 topOffset = (mBounds.height() - model.mIcon.getHeight()) * 0.5F;
+
+                // Set offset to titles
+                leftTitleOffset = (mModelSize * i) + (mModelSize * 0.5F);
+                topTitleOffset =
+                        mBounds.height() - (mBounds.height() - iconMarginTitleHeight) * 0.5F;
+
             } else {
                 leftOffset = (mBounds.width() - (float) model.mIcon.getWidth()) * 0.5F;
                 topOffset = (mModelSize * i) + (mModelSize - (float) model.mIcon.getHeight()) * 0.5F;
+
+                // Set offset to titles
+                leftTitleOffset = leftOffset + (float) model.mIcon.getWidth() * 0.5F;
+                topTitleOffset = topOffset +  (model.mIcon.getHeight() + iconMarginTitleHeight) * 0.5f;
             }
 
             matrixCenterX = leftOffset + (float) model.mIcon.getWidth() * 0.5F;
