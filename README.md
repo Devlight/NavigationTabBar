@@ -319,10 +319,13 @@ Xamarin
 =======
 
 Thanks to [Martijn van Dijk](https://github.com/martijn00) for developing Xamarin bindings library for [NavigationTabBar](https://github.com/martijn00/NavigationTabBarXamarin).  
-Plugin is available on [Nuget](https://www.nuget.org/packages/Xam.Plugins.Android.InfiniteCycleViewPager/).
+Plugin is available on [Nuget](https://www.nuget.org/packages/Xam.Plugins.Android.NavigationTabBar/).
 
 Credits
 =======
+
+Sincere thanks, to portal [FAnDroid.info](http://www.fandroid.info) [(StartAndroid)](https://www.youtube.com/channel/UCzE7HcbvyEiS5ea1rVRbPLQ) who released the review of this library in detail. If you understand the Russian language, then feel free to see the video or read the [text version](http://www.fandroid.info/obzor-biblioteki-navigationtabbar-dlya-android-ot-komandy-devlight/) of its great post.
+[](https://youtu.be/nGikO-tbSsg)
 
 |[Sergey Valiukh](https://dribbble.com/SergeyValiukh)|
 |:--------------------------------------------------:|
