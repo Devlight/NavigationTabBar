@@ -325,7 +325,7 @@ Credits
 =======
 
 Sincere thanks, to portal [FAnDroid.info](http://www.fandroid.info) [(StartAndroid)](https://www.youtube.com/channel/UCzE7HcbvyEiS5ea1rVRbPLQ) who released the review of this library in detail. If you understand the Russian language, then feel free to see the video or read the [text version](http://www.fandroid.info/obzor-biblioteki-navigationtabbar-dlya-android-ot-komandy-devlight/) of its great post.
-[](https://youtu.be/nGikO-tbSsg)
+[![](https://drive.google.com/uc?export=download&id=0BxPO_UeS7wScSGg0TVBodk9ZM2M)](https://youtu.be/nGikO-tbSsg)
 
 |[Sergey Valiukh](https://dribbble.com/SergeyValiukh)|
 |:--------------------------------------------------:|
