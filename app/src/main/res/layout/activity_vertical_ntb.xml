@@ -8,6 +8,9 @@
     android:background="#423752">
 
     <devlight.io.library.ntb.NavigationTabBar
+        app:ntb_title_mode="all"
+        app:ntb_titled="true"
+        app:ntb_title_size="14sp"
         android:id="@+id/ntb_vertical"
         android:layout_width="50dp"
         android:layout_height="match_parent"
