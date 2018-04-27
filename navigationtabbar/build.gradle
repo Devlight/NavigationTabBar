@@ -22,12 +22,12 @@ apply plugin: 'maven'
 version = "1.2.5"
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 27
         versionCode 1
         versionName "1.2.5"
     }
@@ -40,9 +40,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleDependency
-    compile 'com.android.support:design:25.3.1'
+    implementation 'com.android.support:design:27.1.1'
 }
 
 def siteUrl = 'https://github.com/DevLight-Mobile-Agency/NavigationTabBar'
