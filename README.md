@@ -35,6 +35,16 @@ Navigation tab bar with colorful interactions.
 
 You can check the sample app [here](https://github.com/DevLight-Mobile-Agency/NavigationTabBar/tree/master/app).
 
+Warn
+====
+```
+This library is not more supported. 
+If you want to add new feature or fix a bug, grab source code and do it. 
+If you think your fix or feature would be useful to other developers, 
+I can add link of your repository to this README file. 
+Thank you for using our libraries.
+```
+
 Download
 ========
 
