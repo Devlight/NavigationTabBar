@@ -331,6 +331,10 @@ Xamarin
 Thanks to [Martijn van Dijk](https://github.com/martijn00) for developing Xamarin bindings library for [NavigationTabBar](https://github.com/martijn00/NavigationTabBarXamarin).  
 Plugin is available on [Nuget](https://www.nuget.org/packages/Xam.Plugins.Android.NavigationTabBar/).
 
+## use navbar using materialize css
+navbar using materialize css is really easy and would take just assigning right classes to the html tags and it would create a navigation tab bar using its prewritten css and js files. This can be easily used in html pages using downloaded files or cdn links...
+https://materializecss.com/navbar.html
+
 Credits
 =======
 
